@@ -3,6 +3,7 @@ import { company, nav } from "./data";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -11,13 +12,28 @@ export function SiteHeader() {
     };
   }, [open]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-background/85 backdrop-blur-md">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 bg-background/85 backdrop-blur-md transition-shadow duration-500 ${
+        scrolled ? "shadow-[0_1px_0_0_var(--hairline),0_12px_32px_-28px_var(--ink)]" : ""
+      }`}
+    >
       <div className="shell flex h-16 items-center justify-between border-b border-border">
-        <a href="#top" className="font-display text-lg font-bold tracking-tight">
+        <a
+          href="#top"
+          className="font-display text-lg font-bold tracking-tight transition-transform duration-300 hover:-translate-y-0.5 hover:text-signal"
+        >
           {company.short}
           <span className="text-signal">.</span>
         </a>
+
 
         <nav className="hidden items-center gap-8 md:flex">
           {nav.map((item) => (
