@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { Reveal } from "@/components/site/Reveal";
 import {
   company,
   managed,
@@ -10,6 +11,7 @@ import {
   testimonials,
 } from "@/components/site/data";
 import rackImage from "@/assets/network-rack.jpg";
+
 
 const title = "EvaroTech Network Solutions — Managed IT in Trenton, Ontario";
 const description =
