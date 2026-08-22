@@ -80,18 +80,21 @@ function Index() {
             </p>
           </div>
 
-          <div className="mt-16 flex flex-wrap items-end justify-between gap-6">
+          <Reveal
+            delay={150}
+            className="mt-16 flex flex-wrap items-end justify-between gap-6"
+          >
             <p className="label-mono">
               <span className="mr-2 inline-block size-1.5 translate-y-[-1px] bg-signal" />
               Rebranded from Consumer Computing Services
             </p>
             <a
               href="#contact"
-              className="bracket font-display text-2xl font-bold tracking-tight transition-colors hover:text-signal md:text-3xl"
+              className="bracket hover-glow font-display text-2xl font-bold tracking-tight md:text-3xl"
             >
               Free on-site assessment
             </a>
-          </div>
+          </Reveal>
         </section>
 
         {/* Questions band */}
@@ -102,14 +105,17 @@ function Index() {
               "Are you confident in the integrity and security of your data?",
               "Is your network running effectively and efficiently?",
             ].map((q, i) => (
-              <div
+              <Reveal
                 key={q}
+                variant="up"
+                delay={i * 120}
                 className="flex flex-col gap-6 py-12 md:px-8 md:first:pl-0 md:last:pr-0"
               >
                 <span className="label-mono text-signal">0{i + 1}</span>
                 <p className="display-md max-w-[22ch]">{q}</p>
-              </div>
+              </Reveal>
             ))}
+
           </div>
         </section>
 
