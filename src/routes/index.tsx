@@ -162,16 +162,21 @@ function Index() {
         {/* Managed packages */}
         <section id="managed" className="scroll-mt-16 bg-secondary">
           <div className="shell py-20 md:py-28">
-            <SectionLabel index="03" name="Managed" />
-            <h2 className="display-lg mt-6 max-w-[26ch]">
-              Managed packages that cover the whole business.
-            </h2>
+            <Reveal>
+              <SectionLabel index="03" name="Managed" />
+              <h2 className="display-lg mt-6 max-w-[26ch]">
+                Managed packages that cover the whole business.
+              </h2>
+            </Reveal>
 
             <div className="mt-14 grid gap-px sm:grid-cols-2 lg:grid-cols-3">
               {managed.map((m, i) => (
-                <article
+                <Reveal
+                  as="article"
                   key={m.title}
-                  className="flex flex-col justify-between border-t-2 border-foreground bg-card p-8 transition-colors hover:border-signal"
+                  variant="scale"
+                  delay={Math.min(i, 6) * 90}
+                  className="hover-lift flex flex-col justify-between border-t-2 border-foreground bg-card p-8 hover:border-signal"
                 >
                   <span className="label-mono">Package 0{i + 1}</span>
                   <div className="mt-16">
@@ -180,9 +185,10 @@ function Index() {
                       {m.body}
                     </p>
                   </div>
-                </article>
+                </Reveal>
               ))}
             </div>
+
           </div>
         </section>
 
