@@ -276,19 +276,22 @@ function Index() {
         {/* Contact */}
         <section id="contact" className="rule-top scroll-mt-16">
           <div className="shell py-20 md:py-28">
-            <SectionLabel index="06" name="Contact" />
-            <h2 className="display-lg mt-6 max-w-[22ch]">
-              Book a free assessment and no-obligation quote.
-            </h2>
+            <Reveal>
+              <SectionLabel index="06" name="Contact" />
+              <h2 className="display-lg mt-6 max-w-[22ch]">
+                Book a free assessment and no-obligation quote.
+              </h2>
+            </Reveal>
 
             <div className="mt-14 grid gap-12 md:grid-cols-12">
-              <div className="md:col-span-6">
+              <Reveal variant="left" className="md:col-span-6">
                 <a
                   href={`mailto:${company.email}`}
-                  className="bracket font-display text-3xl font-bold tracking-tight transition-colors hover:text-signal md:text-5xl"
+                  className="bracket hover-glow inline-block font-display text-3xl font-bold tracking-tight md:text-5xl"
                 >
                   Start a conversation
                 </a>
+
                 <p className="mt-8 text-sm text-muted-foreground">
                   Or call{" "}
                   <a href={company.phoneHref} className="link-underline text-foreground">
