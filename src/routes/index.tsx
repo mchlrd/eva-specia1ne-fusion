@@ -122,7 +122,7 @@ function Index() {
         {/* Services */}
         <section id="services" className="rule-top scroll-mt-16">
           <div className="shell py-20 md:py-28">
-            <div className="flex flex-wrap items-end justify-between gap-6">
+            <Reveal className="flex flex-wrap items-end justify-between gap-6">
               <div>
                 <SectionLabel index="02" name="Services" />
                 <h2 className="display-lg mt-6 max-w-[24ch]">
@@ -132,13 +132,16 @@ function Index() {
               <p className="label-mono max-w-xs">
                 Don't see what you need? Ask — most requests fall inside this work.
               </p>
-            </div>
+            </Reveal>
 
             <ol className="mt-14 border-t border-border">
               {services.map((s, i) => (
-                <li
+                <Reveal
+                  as="li"
                   key={s.title}
-                  className="group grid gap-4 border-b border-border py-8 md:grid-cols-12 md:items-baseline md:gap-8"
+                  variant="right"
+                  delay={Math.min(i, 6) * 70}
+                  className="group hover-slide grid gap-4 border-b border-border py-8 md:grid-cols-12 md:items-baseline md:gap-8"
                 >
                   <span className="label-mono md:col-span-1">
                     {String(i + 1).padStart(2, "0")}
@@ -149,9 +152,10 @@ function Index() {
                   <p className="text-sm leading-relaxed text-muted-foreground md:col-span-6">
                     {s.body}
                   </p>
-                </li>
+                </Reveal>
               ))}
             </ol>
+
           </div>
         </section>
 
