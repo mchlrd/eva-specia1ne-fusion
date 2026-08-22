@@ -196,13 +196,21 @@ function Index() {
         <section id="approach" className="rule-top scroll-mt-16">
           <div className="shell grid gap-14 py-20 md:grid-cols-2 md:py-28">
             <div>
-              <SectionLabel index="04" name="Approach" />
-              <h2 className="display-lg mt-6 max-w-[20ch]">
-                Assessed on site. Built to keep running.
-              </h2>
+              <Reveal variant="left">
+                <SectionLabel index="04" name="Approach" />
+                <h2 className="display-lg mt-6 max-w-[20ch]">
+                  Assessed on site. Built to keep running.
+                </h2>
+              </Reveal>
               <ol className="mt-12 border-t border-border">
                 {principles.map((p, i) => (
-                  <li key={p.title} className="border-b border-border py-6">
+                  <Reveal
+                    as="li"
+                    key={p.title}
+                    variant="left"
+                    delay={Math.min(i, 6) * 90}
+                    className="hover-slide border-b border-border py-6"
+                  >
                     <div className="flex items-baseline gap-4">
                       <span className="label-mono text-signal">0{i + 1}</span>
                       <div>
@@ -214,11 +222,11 @@ function Index() {
                         </p>
                       </div>
                     </div>
-                  </li>
+                  </Reveal>
                 ))}
               </ol>
             </div>
-            <div className="md:pt-16">
+            <Reveal variant="scale" className="hover-zoom md:pt-16">
               <img
                 src={rackImage}
                 alt="Network cabinet with switches, patch panels and neatly bundled ethernet cabling"
@@ -230,7 +238,8 @@ function Index() {
               <p className="label-mono mt-4">
                 Fig. 01 — Structured cabling and rack build, client site
               </p>
-            </div>
+            </Reveal>
+
           </div>
         </section>
 
