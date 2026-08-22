@@ -300,3 +300,44 @@
     transform: translateX(4px);
   }
 }
+
+/* --- Glowing letters on hover --- */
+
+@utility glow-text {
+  transition:
+    color 0.35s ease,
+    text-shadow 0.45s ease;
+  &:hover {
+    color: var(--signal);
+    text-shadow:
+      0 0 1px color-mix(in oklab, var(--signal) 55%, transparent),
+      0 0 12px color-mix(in oklab, var(--signal) 45%, transparent),
+      0 0 34px color-mix(in oklab, var(--signal) 28%, transparent);
+  }
+}
+
+@utility glow-children {
+  & h1:hover,
+  & h2:hover,
+  & h3:hover,
+  & p:hover,
+  & a:hover,
+  & li:hover > span,
+  & blockquote:hover {
+    color: var(--signal);
+    text-shadow:
+      0 0 1px color-mix(in oklab, var(--signal) 50%, transparent),
+      0 0 12px color-mix(in oklab, var(--signal) 40%, transparent),
+      0 0 30px color-mix(in oklab, var(--signal) 24%, transparent);
+  }
+  & h1,
+  & h2,
+  & h3,
+  & p,
+  & a,
+  & blockquote {
+    transition:
+      color 0.35s ease,
+      text-shadow 0.45s ease;
+  }
+}
