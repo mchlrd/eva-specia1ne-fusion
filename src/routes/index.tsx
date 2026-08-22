@@ -300,7 +300,8 @@ function Index() {
                   — we will come to you, assess your business technology needs and
                   recommend what to do next.
                 </p>
-              </div>
+              </Reveal>
+
 
               <dl className="grid gap-8 md:col-span-6 md:grid-cols-2">
                 <div>
