@@ -246,21 +246,30 @@ function Index() {
         {/* Clients */}
         <section id="clients" className="scroll-mt-16 bg-primary text-primary-foreground">
           <div className="shell py-20 md:py-28">
-            <SectionLabel index="05" name="Clients" />
-            <h2 className="display-lg mt-6 max-w-[22ch]">
-              The work, described by the people who called.
-            </h2>
+            <Reveal>
+              <SectionLabel index="05" name="Clients" />
+              <h2 className="display-lg mt-6 max-w-[22ch]">
+                The work, described by the people who called.
+              </h2>
+            </Reveal>
 
             <div className="mt-14 grid gap-10 md:grid-cols-3">
-              {testimonials.map((t) => (
-                <blockquote key={t.name} className="border-t border-signal pt-6">
+              {testimonials.map((t, i) => (
+                <Reveal
+                  as="blockquote"
+                  key={t.name}
+                  variant="up"
+                  delay={i * 110}
+                  className="hover-lift border-t border-signal pt-6"
+                >
                   <p className="text-base leading-relaxed">{t.quote}</p>
                   <footer className="label-mono mt-6 text-primary-foreground/70">
                     {t.name} — {t.where}
                   </footer>
-                </blockquote>
+                </Reveal>
               ))}
             </div>
+
           </div>
         </section>
 
