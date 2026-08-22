@@ -257,3 +257,46 @@
 @utility rise {
   animation: rise-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+/* --- Hover interaction utilities --- */
+
+@utility hover-lift {
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--ink) 55%, transparent);
+  }
+}
+
+@utility hover-slide {
+  transition:
+    padding-left 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.45s ease;
+  &:hover {
+    padding-left: 0.75rem;
+    background-color: color-mix(in oklab, var(--signal) 6%, transparent);
+  }
+}
+
+@utility hover-zoom {
+  overflow: hidden;
+  & img {
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover img {
+    transform: scale(1.045);
+  }
+}
+
+@utility hover-glow {
+  transition:
+    color 0.3s ease,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover {
+    color: var(--signal);
+    transform: translateX(4px);
+  }
+}
