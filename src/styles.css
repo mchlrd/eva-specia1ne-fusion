@@ -316,28 +316,21 @@
   }
 }
 
-@utility glow-children {
-  & h1:hover,
-  & h2:hover,
-  & h3:hover,
-  & p:hover,
-  & a:hover,
-  & li:hover > span,
-  & blockquote:hover {
+@utility glow-char {
+  transition:
+    color 0.18s ease,
+    text-shadow 0.25s ease;
+  &:hover {
     color: var(--signal);
     text-shadow:
-      0 0 1px color-mix(in oklab, var(--signal) 50%, transparent),
-      0 0 12px color-mix(in oklab, var(--signal) 40%, transparent),
-      0 0 30px color-mix(in oklab, var(--signal) 24%, transparent);
+      0 0 1px color-mix(in oklab, var(--signal) 60%, transparent),
+      0 0 10px color-mix(in oklab, var(--signal) 50%, transparent),
+      0 0 26px color-mix(in oklab, var(--signal) 30%, transparent);
   }
-  & h1,
-  & h2,
-  & h3,
-  & p,
-  & a,
-  & blockquote {
-    transition:
-      color 0.35s ease,
-      text-shadow 0.45s ease;
+  /* neighbouring letters pick up a softer halo */
+  &:hover + .glow-char,
+  &:has(+ .glow-char:hover) {
+    color: color-mix(in oklab, var(--signal) 62%, currentColor);
+    text-shadow: 0 0 12px color-mix(in oklab, var(--signal) 26%, transparent);
   }
 }

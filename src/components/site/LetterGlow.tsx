@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ElementType, type ReactNode } from "react";
 
 const SKIP_TAGS = new Set([
   "SCRIPT",
@@ -19,11 +19,13 @@ const SKIP_TAGS = new Set([
 export function LetterGlow({
   children,
   className = "",
+  as: Tag = "div",
 }: {
   children: ReactNode;
   className?: string;
+  as?: ElementType;
 }) {
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const root = ref.current;
@@ -68,8 +70,8 @@ export function LetterGlow({
   }, []);
 
   return (
-    <div ref={ref} className={className}>
+    <Tag ref={ref} className={className}>
       {children}
-    </div>
+    </Tag>
   );
 }
