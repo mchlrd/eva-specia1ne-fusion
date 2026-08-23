@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { ContactPanel } from "@/components/site/ContactPanel";
+import { LetterGlow } from "@/components/site/LetterGlow";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Reveal } from "@/components/site/Reveal";
@@ -68,7 +69,7 @@ function Index() {
     <div id="top" className="min-h-screen">
       <SiteHeader />
 
-      <main className="glow-children">
+      <LetterGlow as="main">
         {/* Hero */}
         <section className="shell flex min-h-[92svh] flex-col justify-between pb-12 pt-28">
           <div className="rise">
@@ -94,7 +95,7 @@ function Index() {
             <button
               type="button"
               onClick={() => setContactOpen(true)}
-              className="bracket hover-glow glow-text font-display text-2xl font-bold tracking-tight md:text-3xl"
+              className="bracket hover-glow font-display text-2xl font-bold tracking-tight md:text-3xl"
             >
               Free on-site assessment
             </button>
@@ -292,7 +293,7 @@ function Index() {
                 <button
                   type="button"
                   onClick={() => setContactOpen(true)}
-                  className="bracket hover-glow glow-text inline-block text-left font-display text-3xl font-bold tracking-tight md:text-5xl"
+                  className="bracket hover-glow inline-block text-left font-display text-3xl font-bold tracking-tight md:text-5xl"
                 >
                   Start a conversation
                 </button>
@@ -341,7 +342,7 @@ function Index() {
             </div>
           </div>
         </section>
-      </main>
+      </LetterGlow>
 
       <SiteFooter />
       <ContactPanel open={contactOpen} onClose={() => setContactOpen(false)} />

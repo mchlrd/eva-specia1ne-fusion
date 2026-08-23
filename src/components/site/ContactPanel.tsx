@@ -165,7 +165,7 @@ export function ContactPanel({ open, onClose }: { open: boolean; onClose: () => 
 
             <button
               type="submit"
-              className="bracket hover-glow glow-text mt-10 self-start font-display text-2xl font-bold tracking-tight md:text-3xl"
+              className="bracket hover-glow mt-10 self-start font-display text-2xl font-bold tracking-tight md:text-3xl"
             >
               Send enquiry
             </button>
