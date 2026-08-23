@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
+import { ContactPanel } from "@/components/site/ContactPanel";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Reveal } from "@/components/site/Reveal";
@@ -42,6 +44,7 @@ function SectionLabel({ index, name }: { index: string; name: string }) {
 }
 
 function Index() {
+  const [contactOpen, setContactOpen] = useState(false);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -65,7 +68,7 @@ function Index() {
     <div id="top" className="min-h-screen">
       <SiteHeader />
 
-      <main>
+      <main className="glow-children">
         {/* Hero */}
         <section className="shell flex min-h-[92svh] flex-col justify-between pb-12 pt-28">
           <div className="rise">
@@ -88,12 +91,13 @@ function Index() {
               <span className="mr-2 inline-block size-1.5 translate-y-[-1px] bg-signal" />
               Rebranded from Consumer Computing Services
             </p>
-            <a
-              href="#contact"
-              className="bracket hover-glow font-display text-2xl font-bold tracking-tight md:text-3xl"
+            <button
+              type="button"
+              onClick={() => setContactOpen(true)}
+              className="bracket hover-glow glow-text font-display text-2xl font-bold tracking-tight md:text-3xl"
             >
               Free on-site assessment
-            </a>
+            </button>
           </Reveal>
         </section>
 
@@ -285,12 +289,13 @@ function Index() {
 
             <div className="mt-14 grid gap-12 md:grid-cols-12">
               <Reveal variant="left" className="md:col-span-6">
-                <a
-                  href={`mailto:${company.email}`}
-                  className="bracket hover-glow inline-block font-display text-3xl font-bold tracking-tight md:text-5xl"
+                <button
+                  type="button"
+                  onClick={() => setContactOpen(true)}
+                  className="bracket hover-glow glow-text inline-block text-left font-display text-3xl font-bold tracking-tight md:text-5xl"
                 >
                   Start a conversation
-                </a>
+                </button>
 
                 <p className="mt-8 text-sm text-muted-foreground">
                   Or call{" "}
@@ -339,6 +344,7 @@ function Index() {
       </main>
 
       <SiteFooter />
+      <ContactPanel open={contactOpen} onClose={() => setContactOpen(false)} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
