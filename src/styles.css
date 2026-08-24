@@ -42,6 +42,8 @@
   --color-ink: var(--ink);
   --color-paper: var(--paper);
   --color-signal: var(--signal);
+  --color-ember: var(--ember);
+  --color-ember-foreground: var(--ember-foreground);
   --color-signal-foreground: var(--signal-foreground);
   --color-hairline: var(--hairline);
 }
@@ -50,10 +52,12 @@
   --radius: 0.25rem;
 
   --paper: oklch(0.958 0.008 85);
-  --ink: oklch(0.17 0.008 60);
-  --signal: oklch(0.53 0.238 264);
+  --ink: oklch(0.19 0.014 235);
+  --signal: oklch(0.60 0.098 213);
+  --ember: oklch(0.735 0.163 58);
+  --ember-foreground: oklch(0.19 0.02 60);
   --signal-foreground: oklch(0.98 0.005 85);
-  --hairline: oklch(0.17 0.008 60 / 14%);
+  --hairline: oklch(0.19 0.014 235 / 16%);
 
   --background: var(--paper);
   --foreground: var(--ink);
