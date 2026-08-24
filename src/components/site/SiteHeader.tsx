@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
+
 import { company, nav } from "./data";
+import logo from "@/assets/evarotech-logo.png.asset.json";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -26,20 +29,35 @@ export function SiteHeader() {
       }`}
     >
       <div className="shell flex h-16 items-center justify-between border-b border-border">
-        <a
-          href="#top"
-          className="font-display text-lg font-bold tracking-tight transition-transform duration-300 hover:-translate-y-0.5 hover:text-signal"
+        <Link
+          to="/"
+          onClick={() => setOpen(false)}
+          data-no-glow
+          className="flex items-center gap-3 transition-transform duration-300 hover:-translate-y-0.5"
         >
-          {company.short}
-          <span className="text-signal">.</span>
-        </a>
-
+          <img
+            src={logo.url}
+            alt="EvaroTech Network Solutions logo"
+            width={40}
+            height={40}
+            className="size-9 object-contain"
+          />
+          <span className="font-display text-lg font-bold tracking-tight">
+            {company.short}
+            <span className="text-ember">.</span>
+          </span>
+        </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
           {nav.map((item) => (
-            <a key={item.href} href={item.href} className="label-mono link-underline">
+            <Link
+              key={item.to}
+              to={item.to}
+              activeProps={{ className: "text-signal" }}
+              className="label-mono link-underline"
+            >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -68,15 +86,15 @@ export function SiteHeader() {
         <div className="shell flex h-[calc(100dvh-4rem)] flex-col justify-between bg-background pb-10 pt-10 md:hidden">
           <nav className="flex flex-col">
             {nav.map((item, i) => (
-              <a
-                key={item.href}
-                href={item.href}
+              <Link
+                key={item.to}
+                to={item.to}
                 onClick={() => setOpen(false)}
                 className="flex items-baseline justify-between border-b border-border py-5"
               >
                 <span className="display-md">{item.label}</span>
-                <span className="label-mono text-signal">0{i + 1}</span>
-              </a>
+                <span className="label-mono text-ember">0{i + 1}</span>
+              </Link>
             ))}
           </nav>
           <div className="label-mono space-y-1">

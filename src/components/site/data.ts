@@ -94,9 +94,9 @@ export const principles = [
 ];
 
 export const nav = [
-  { label: "Services", href: "#services" },
-  { label: "Managed", href: "#managed" },
-  { label: "Approach", href: "#approach" },
-  { label: "Clients", href: "#clients" },
-  { label: "Contact", href: "#contact" },
-];
+  { label: "Services", to: "/services" },
+  { label: "Managed", to: "/managed" },
+  { label: "Approach", to: "/approach" },
+  { label: "Clients", to: "/clients" },
+  { label: "Contact", to: "/contact" },
+] as const;
