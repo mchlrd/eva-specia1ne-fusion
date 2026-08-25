@@ -46,7 +46,7 @@ function ContactPage() {
           <div className="md:col-span-5">
             <Reveal variant="scale" className="hover-zoom">
               <img
-                src={tim.url}
+                src={tim}
                 alt={`${company.owner}, owner and operator of ${company.name}`}
                 width={800}
                 height={800}
