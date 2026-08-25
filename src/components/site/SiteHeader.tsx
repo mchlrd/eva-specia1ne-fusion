@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { company, nav } from "./data";
-import logo from "@/assets/evarotech-logo.png.asset.json";
+import logo from "@/assets/evarotech-logo.png";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
