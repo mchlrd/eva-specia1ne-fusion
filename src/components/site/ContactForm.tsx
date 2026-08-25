@@ -80,7 +80,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={submit} noValidate>
+    <form onSubmit={submit} noValidate data-no-glow>
       <div className="border-t border-border">
         {fields.map((f) => (
           <label key={f.key} className="block border-b border-border py-5">
