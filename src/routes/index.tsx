@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Reveal } from "@/components/site/Reveal";
 import { company, nav, services } from "@/components/site/data";
-import logo from "@/assets/evarotech-logo.png";
+import logo from "@/assets/evarotech-logo-transparent.png";
 
 const title = "EvaroTech Network Solutions — Managed IT in Trenton, Ontario";
 const description =
