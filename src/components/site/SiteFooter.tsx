@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 import { company, nav } from "./data";
-import logo from "@/assets/evarotech-logo.png";
+import logo from "@/assets/evarotech-logo-transparent.png";
 
 export function SiteFooter() {
   return (
