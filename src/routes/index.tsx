@@ -55,7 +55,7 @@ function Index() {
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-8">
             <img
-              src={logo.url}
+              src={logo}
               alt="EvaroTech Network Solutions logo"
               width={160}
               height={160}
