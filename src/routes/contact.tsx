@@ -4,7 +4,7 @@ import { PageHeader, SiteLayout } from "@/components/site/SiteLayout";
 import { Reveal } from "@/components/site/Reveal";
 import { ContactForm } from "@/components/site/ContactForm";
 import { company } from "@/components/site/data";
-import tim from "@/assets/tim-kroekenstoel.jpg.asset.json";
+import tim from "@/assets/tim-kroekenstoel.jpg";
 
 const title = "Contact EvaroTech — Free On-Site IT Assessment in Trenton, ON";
 const description =
