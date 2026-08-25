@@ -9,7 +9,7 @@ export function SiteFooter() {
       <div className="shell grid gap-10 py-14 md:grid-cols-12">
         <div className="md:col-span-5">
           <img
-            src={logo.url}
+            src={logo}
             alt="EvaroTech Network Solutions logo"
             width={72}
             height={72}
