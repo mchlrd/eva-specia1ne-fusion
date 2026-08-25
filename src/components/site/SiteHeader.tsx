@@ -36,7 +36,7 @@ export function SiteHeader() {
           className="flex items-center gap-3 transition-transform duration-300 hover:-translate-y-0.5"
         >
           <img
-            src={logo.url}
+            src={logo}
             alt="EvaroTech Network Solutions logo"
             width={40}
             height={40}
