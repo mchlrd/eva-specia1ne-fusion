@@ -84,8 +84,8 @@ export function ContactForm() {
       <div className="border-t border-border">
         {fields.map((f) => (
           <label key={f.key} className="block border-b border-border py-5">
-            <span className="label-mono flex items-center justify-between">
-              {f.label}
+            <span className="label-mono flex items-center justify-between gap-4">
+              <span>{f.label}</span>
               {f.optional && <span className="text-ember">Optional</span>}
             </span>
             {f.type === "textarea" ? (
