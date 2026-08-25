@@ -51,7 +51,7 @@
 :root {
   --radius: 0.25rem;
 
-  --paper: oklch(0.958 0.008 85);
+  --paper: oklch(0.985 0.002 230);
   --ink: oklch(0.19 0.014 235);
   --signal: oklch(0.60 0.098 213);
   --ember: oklch(0.735 0.163 58);
@@ -61,15 +61,15 @@
 
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: oklch(0.982 0.006 85);
+  --card: oklch(1 0 0);
   --card-foreground: var(--ink);
   --popover: oklch(0.982 0.006 85);
   --popover-foreground: var(--ink);
   --primary: var(--ink);
   --primary-foreground: oklch(0.98 0.005 85);
-  --secondary: oklch(0.925 0.009 85);
+  --secondary: oklch(0.955 0.004 225);
   --secondary-foreground: var(--ink);
-  --muted: oklch(0.925 0.009 85);
+  --muted: oklch(0.955 0.004 225);
   --muted-foreground: oklch(0.47 0.01 70);
   --accent: var(--signal);
   --accent-foreground: var(--signal-foreground);

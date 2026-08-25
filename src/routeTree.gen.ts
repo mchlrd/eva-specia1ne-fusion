@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApproachRouteImport } from './routes/approach'
 import { Route as ClientsRouteImport } from './routes/clients'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ManagedRouteImport } from './routes/managed'
 import { Route as ServicesRouteImport } from './routes/services'
 
@@ -30,6 +31,11 @@ const ClientsRoute = ClientsRouteImport.update({
   path: '/clients',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ManagedRoute = ManagedRouteImport.update({
   id: '/managed',
   path: '/managed',
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/approach': typeof ApproachRoute
   '/clients': typeof ClientsRoute
+  '/contact': typeof ContactRoute
   '/managed': typeof ManagedRoute
   '/services': typeof ServicesRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/approach': typeof ApproachRoute
   '/clients': typeof ClientsRoute
+  '/contact': typeof ContactRoute
   '/managed': typeof ManagedRoute
   '/services': typeof ServicesRoute
 }
@@ -60,21 +68,31 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/approach': typeof ApproachRoute
   '/clients': typeof ClientsRoute
+  '/contact': typeof ContactRoute
   '/managed': typeof ManagedRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/approach' | '/clients' | '/managed' | '/services'
+  fullPaths:
+    '/' | '/approach' | '/clients' | '/contact' | '/managed' | '/services'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/approach' | '/clients' | '/managed' | '/services'
-  id: '__root__' | '/' | '/approach' | '/clients' | '/managed' | '/services'
+  to: '/' | '/approach' | '/clients' | '/contact' | '/managed' | '/services'
+  id:
+    | '__root__'
+    | '/'
+    | '/approach'
+    | '/clients'
+    | '/contact'
+    | '/managed'
+    | '/services'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApproachRoute: typeof ApproachRoute
   ClientsRoute: typeof ClientsRoute
+  ContactRoute: typeof ContactRoute
   ManagedRoute: typeof ManagedRoute
   ServicesRoute: typeof ServicesRoute
 }
@@ -102,6 +120,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/managed': {
       id: '/managed'
       path: '/managed'
@@ -123,6 +148,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApproachRoute: ApproachRoute,
   ClientsRoute: ClientsRoute,
+  ContactRoute: ContactRoute,
   ManagedRoute: ManagedRoute,
   ServicesRoute: ServicesRoute,
 }
