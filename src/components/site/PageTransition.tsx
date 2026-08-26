@@ -13,9 +13,9 @@ function indexOfPath(pathname: string) {
 }
 
 /**
- * Slides each page in from the side the new nav item sits on, relative to the
- * page you were just on — Services (left of Managed) enters from the left,
- * Approach (right of Managed) enters from the right.
+ * Sweeps an orange-to-green colour panel across the screen in the direction the
+ * new nav item sits, relative to the page you were just on, then fades the new
+ * page in behind it.
  */
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -29,12 +29,16 @@ export function PageTransition({ children }: { children: ReactNode }) {
     setState({ key: pathname, dir: Math.sign(delta) });
   }, [pathname]);
 
+  const dirName = state.dir > 0 ? "right" : state.dir < 0 ? "left" : "none";
+
   return (
-    <div
-      key={state.key}
-      data-page-enter={state.dir > 0 ? "right" : state.dir < 0 ? "left" : "none"}
-    >
-      {children}
-    </div>
+    <>
+      {state.dir !== 0 && (
+        <div key={`wipe-${state.key}`} data-page-wipe={dirName} aria-hidden="true" />
+      )}
+      <div key={state.key} data-page-enter={dirName}>
+        {children}
+      </div>
+    </>
   );
 }

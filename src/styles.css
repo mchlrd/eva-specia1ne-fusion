@@ -220,9 +220,11 @@
       filter: none;
       transition: none;
     }
-    [data-page-enter],
-    [data-page-wipe] {
+    [data-page-enter] {
       animation: none;
+      opacity: 1;
+    }
+    [data-page-wipe] {
       display: none;
     }
   }
