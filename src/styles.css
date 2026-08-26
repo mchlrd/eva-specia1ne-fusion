@@ -155,32 +155,58 @@
     filter: none;
   }
 
-  /* --- Directional page transitions (parallax by nav position) --- */
-  @keyframes page-enter-right {
+  /* --- Directional colour-wipe page transitions --- */
+  @keyframes page-content-in {
     from {
       opacity: 0;
-      transform: translate3d(7%, 0, 0);
     }
     to {
       opacity: 1;
-      transform: none;
     }
   }
-  @keyframes page-enter-left {
-    from {
-      opacity: 0;
-      transform: translate3d(-7%, 0, 0);
+  [data-page-enter] {
+    animation: page-content-in 0.5s ease-out 0.28s both;
+  }
+
+  @keyframes wipe-from-right {
+    0% {
+      transform: translate3d(100%, 0, 0);
     }
-    to {
-      opacity: 1;
-      transform: none;
+    45% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-100%, 0, 0);
     }
   }
-  [data-page-enter="right"] {
-    animation: page-enter-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  @keyframes wipe-from-left {
+    0% {
+      transform: translate3d(-100%, 0, 0);
+    }
+    45% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(100%, 0, 0);
+    }
   }
-  [data-page-enter="left"] {
-    animation: page-enter-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  [data-page-wipe] {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      var(--ember) 0%,
+      color-mix(in oklab, var(--ember) 45%, var(--signal)) 45%,
+      var(--signal) 100%
+    );
+  }
+  [data-page-wipe="right"] {
+    animation: wipe-from-right 0.85s cubic-bezier(0.7, 0, 0.3, 1) both;
+  }
+  [data-page-wipe="left"] {
+    animation: wipe-from-left 0.85s cubic-bezier(0.7, 0, 0.3, 1) both;
   }
 
   @media (prefers-reduced-motion: reduce) {
