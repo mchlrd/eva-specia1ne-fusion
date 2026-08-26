@@ -58,6 +58,7 @@
   --ember-foreground: oklch(0.19 0.02 60);
   --signal-foreground: oklch(0.98 0.005 85);
   --hairline: oklch(0.19 0.014 235 / 16%);
+  --wipe-green: oklch(0.62 0.115 168);
 
   --background: var(--paper);
   --foreground: var(--ink);
@@ -198,8 +199,8 @@
     background: linear-gradient(
       100deg,
       var(--ember) 0%,
-      color-mix(in oklab, var(--ember) 45%, var(--signal)) 45%,
-      var(--signal) 100%
+      color-mix(in oklab, var(--ember) 45%, var(--wipe-green)) 45%,
+      var(--wipe-green) 100%
     );
   }
   [data-page-wipe="right"] {
@@ -219,8 +220,10 @@
       filter: none;
       transition: none;
     }
-    [data-page-enter] {
+    [data-page-enter],
+    [data-page-wipe] {
       animation: none;
+      display: none;
     }
   }
 }
