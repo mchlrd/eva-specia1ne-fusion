@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { company, nav } from "./data";
-import logo from "@/assets/evarotech-logo-transparent.png";
+import mark from "@/assets/evarotech-mark.png";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -36,11 +36,11 @@ export function SiteHeader() {
           className="flex items-center gap-3 transition-transform duration-300 hover:-translate-y-0.5"
         >
           <img
-            src={logo}
+            src={mark}
             alt="EvaroTech Network Solutions logo"
-            width={40}
-            height={40}
-            className="size-9 object-contain"
+            width={44}
+            height={36}
+            className="h-7 w-auto object-contain"
           />
           <span className="font-display text-lg font-bold tracking-tight">
             {company.short}

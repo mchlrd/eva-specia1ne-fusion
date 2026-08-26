@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Reveal } from "@/components/site/Reveal";
 import { company, nav, services } from "@/components/site/data";
-import logo from "@/assets/evarotech-logo-transparent.png";
+import mark from "@/assets/evarotech-mark.png";
 
 const title = "EvaroTech Network Solutions — Managed IT in Trenton, Ontario";
 const description =
@@ -53,18 +53,16 @@ function Index() {
             <span aria-hidden="true">/</span>
             <span>Signal</span>
           </p>
-          <div className="mt-10 flex flex-wrap items-center gap-8">
-            <img
-              src={logo}
-              alt="EvaroTech Network Solutions logo"
-              width={160}
-              height={160}
-              className="size-24 object-contain md:size-32"
-            />
-            <h1 className="display-xl max-w-[19ch]">
-              Networks, servers and backups—kept working for your business.
-            </h1>
-          </div>
+          <img
+            src={mark}
+            alt="EvaroTech Network Solutions logo"
+            width={193}
+            height={159}
+            className="mt-8 h-14 w-auto object-contain md:h-20"
+          />
+          <h1 className="display-xl mt-8 max-w-[19ch]">
+            Networks, servers and backups—kept working for your business.
+          </h1>
           <p className="mt-10 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
             EvaroTech Network Solutions is a certified independent practice in Trenton, Ontario. We
             assess your technology on site, put the right systems in place, and manage them so the

@@ -3,12 +3,15 @@ import type { ReactNode } from "react";
 import { LetterGlow } from "./LetterGlow";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
+import { PageTransition } from "./PageTransition";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div id="top" className="min-h-screen">
       <SiteHeader />
-      <LetterGlow as="main">{children}</LetterGlow>
+      <LetterGlow as="main" className="overflow-x-clip">
+        <PageTransition>{children}</PageTransition>
+      </LetterGlow>
       <SiteFooter />
     </div>
   );

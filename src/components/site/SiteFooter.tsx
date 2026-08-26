@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 import { company, nav } from "./data";
-import logo from "@/assets/evarotech-logo-transparent.png";
+import mark from "@/assets/evarotech-mark.png";
 
 export function SiteFooter() {
   return (
@@ -9,12 +9,12 @@ export function SiteFooter() {
       <div className="shell grid gap-10 py-14 md:grid-cols-12">
         <div className="md:col-span-5">
           <img
-            src={logo}
+            src={mark}
             alt="EvaroTech Network Solutions logo"
-            width={72}
-            height={72}
+            width={112}
+            height={92}
             loading="lazy"
-            className="size-16 object-contain"
+            className="h-12 w-auto object-contain"
           />
           <p className="display-md mt-5 max-w-sm">{company.name}</p>
           <p className="label-mono mt-4">{company.tagline}</p>
