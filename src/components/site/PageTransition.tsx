@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 
 import { nav } from "./data";
@@ -13,28 +13,43 @@ function indexOfPath(pathname: string) {
 }
 
 /**
- * Slides each page in from the side the new nav item sits on, relative to the
- * page you were just on — Services (left of Managed) enters from the left,
- * Approach (right of Managed) enters from the right.
+ * Sweeps an orange-to-green colour panel across the screen in the direction the
+ * new nav item sits, relative to the page you were just on, then fades the new
+ * page in behind it.
  */
+// Each route renders its own layout, so the previous path must live outside the
+// component tree to survive remounts.
+let lastPath: string | null = null;
+
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const previous = useRef(pathname);
-  const [state, setState] = useState({ key: pathname, dir: 0 });
+  const [state, setState] = useState(() => ({
+    key: pathname,
+    dir:
+      lastPath === null || lastPath === pathname
+        ? 0
+        : Math.sign(indexOfPath(pathname) - indexOfPath(lastPath)),
+  }));
 
   useEffect(() => {
-    if (pathname === previous.current) return;
-    const delta = indexOfPath(pathname) - indexOfPath(previous.current);
-    previous.current = pathname;
-    setState({ key: pathname, dir: Math.sign(delta) });
-  }, [pathname]);
+    lastPath = pathname;
+    if (pathname === state.key) return;
+    setState({
+      key: pathname,
+      dir: Math.sign(indexOfPath(pathname) - indexOfPath(state.key)),
+    });
+  }, [pathname, state.key]);
+
+  const dirName = state.dir > 0 ? "right" : state.dir < 0 ? "left" : "none";
 
   return (
-    <div
-      key={state.key}
-      data-page-enter={state.dir > 0 ? "right" : state.dir < 0 ? "left" : "none"}
-    >
-      {children}
-    </div>
+    <>
+      {state.dir !== 0 && (
+        <div key={`wipe-${state.key}`} data-page-wipe={dirName} aria-hidden="true" />
+      )}
+      <div key={state.key} data-page-enter={dirName}>
+        {children}
+      </div>
+    </>
   );
 }
