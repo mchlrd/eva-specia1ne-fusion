@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { PageHeader, SiteLayout } from "@/components/site/SiteLayout";
 import { Reveal } from "@/components/site/Reveal";
-import { services } from "@/components/site/data";
+import { ServiceAccordion } from "@/components/site/ServiceAccordion";
 
 const title = "IT Services — Networks, Servers, Wireless & Cabling | EvaroTech";
 const description =
