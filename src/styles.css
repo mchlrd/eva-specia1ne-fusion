@@ -155,6 +155,34 @@
     filter: none;
   }
 
+  /* --- Directional page transitions (parallax by nav position) --- */
+  @keyframes page-enter-right {
+    from {
+      opacity: 0;
+      transform: translate3d(7%, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes page-enter-left {
+    from {
+      opacity: 0;
+      transform: translate3d(-7%, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  [data-page-enter="right"] {
+    animation: page-enter-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  [data-page-enter="left"] {
+    animation: page-enter-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -164,6 +192,9 @@
       transform: none;
       filter: none;
       transition: none;
+    }
+    [data-page-enter] {
+      animation: none;
     }
   }
 }
