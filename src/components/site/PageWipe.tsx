@@ -26,6 +26,7 @@ export function PageWipe() {
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     const unsubscribe = router.subscribe("onBeforeNavigate", ({ fromLocation, toLocation }) => {
+      console.log("WIPE ev", fromLocation?.pathname, toLocation?.pathname);
       const from = fromLocation?.pathname;
       const to = toLocation?.pathname;
       if (!from || !to || from === to) return;
