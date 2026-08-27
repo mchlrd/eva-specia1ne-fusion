@@ -45,6 +45,8 @@ export function PageTransition({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log("PT effect", pathname, state.key, readLastPath());
     writeLastPath(pathname);
     if (pathname === state.key) return;
     setState({
