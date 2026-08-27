@@ -17,22 +17,35 @@ function indexOfPath(pathname: string) {
  * new nav item sits, relative to the page you were just on, then fades the new
  * page in behind it.
  */
-// Each route renders its own layout, so the previous path must live outside the
-// component tree to survive remounts.
-let lastPath: string | null = null;
+// Each route renders its own layout, so the previous path is kept on the window
+// to survive component remounts and module re-evaluation.
+const KEY = "__evarotechLastPath";
+
+function readLastPath(): string | null {
+  if (typeof window === "undefined") return null;
+  return (window as unknown as Record<string, string | undefined>)[KEY] ?? null;
+}
+
+function writeLastPath(pathname: string) {
+  if (typeof window === "undefined") return;
+  (window as unknown as Record<string, string>)[KEY] = pathname;
+}
 
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [state, setState] = useState(() => ({
-    key: pathname,
-    dir:
-      lastPath === null || lastPath === pathname
-        ? 0
-        : Math.sign(indexOfPath(pathname) - indexOfPath(lastPath)),
-  }));
+  const [state, setState] = useState(() => {
+    const lastPath = readLastPath();
+    return {
+      key: pathname,
+      dir:
+        lastPath === null || lastPath === pathname
+          ? 0
+          : Math.sign(indexOfPath(pathname) - indexOfPath(lastPath)),
+    };
+  });
 
   useEffect(() => {
-    lastPath = pathname;
+    writeLastPath(pathname);
     if (pathname === state.key) return;
     setState({
       key: pathname,
