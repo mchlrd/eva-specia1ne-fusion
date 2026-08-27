@@ -53,12 +53,14 @@
 
   --paper: oklch(0.985 0.002 230);
   --ink: oklch(0.19 0.014 235);
-  --signal: oklch(0.60 0.098 213);
-  --ember: oklch(0.735 0.163 58);
+  --signal: oklch(0.621 0.106 206);
+  --ember: oklch(0.752 0.173 60);
   --ember-foreground: oklch(0.19 0.02 60);
   --signal-foreground: oklch(0.98 0.005 85);
   --hairline: oklch(0.19 0.014 235 / 16%);
-  --wipe-green: oklch(0.62 0.115 168);
+  --wipe-aqua: oklch(0.72 0.125 202);
+  --wipe-green: var(--wipe-aqua);
+
 
   --background: var(--paper);
   --foreground: var(--ink);
