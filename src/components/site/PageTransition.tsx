@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 
 import { nav } from "./data";
@@ -12,42 +12,40 @@ function indexOfPath(pathname: string) {
   return nested === -1 ? 0 : nested;
 }
 
+// Each route renders its own layout, so the previous path is kept on the window
+// to survive component remounts and module re-evaluation.
+const KEY = "__evarotechLastPath";
+
+function readLastPath(): string | null {
+  if (typeof window === "undefined") return null;
+  return (window as unknown as Record<string, string | undefined>)[KEY] ?? null;
+}
+
+function writeLastPath(pathname: string) {
+  if (typeof window === "undefined") return;
+  (window as unknown as Record<string, string>)[KEY] = pathname;
+}
+
 /**
- * Sweeps an orange-to-green colour panel across the screen in the direction the
- * new nav item sits, relative to the page you were just on, then fades the new
+ * Sweeps an orange-to-green colour panel across the screen from the side the new
+ * nav item sits on, relative to the page you were just on, then fades the new
  * page in behind it.
  */
-// Each route renders its own layout, so the previous path must live outside the
-// component tree to survive remounts.
-let lastPath: string | null = null;
-
 export function PageTransition({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [state, setState] = useState(() => ({
-    key: pathname,
-    dir:
-      lastPath === null || lastPath === pathname
-        ? 0
-        : Math.sign(indexOfPath(pathname) - indexOfPath(lastPath)),
-  }));
 
-  useEffect(() => {
-    lastPath = pathname;
-    if (pathname === state.key) return;
-    setState({
-      key: pathname,
-      dir: Math.sign(indexOfPath(pathname) - indexOfPath(state.key)),
-    });
-  }, [pathname, state.key]);
+  const dir = useMemo(() => {
+    const last = readLastPath();
+    writeLastPath(pathname);
+    if (!last || last === pathname) return 0;
+    return Math.sign(indexOfPath(pathname) - indexOfPath(last));
+  }, [pathname]);
 
-  const dirName = state.dir > 0 ? "right" : state.dir < 0 ? "left" : "none";
+  const dirName = dir > 0 ? "right" : dir < 0 ? "left" : "none";
 
   return (
     <>
-      {state.dir !== 0 && (
-        <div key={`wipe-${state.key}`} data-page-wipe={dirName} aria-hidden="true" />
-      )}
-      <div key={state.key} data-page-enter={dirName}>
+      <div key={pathname} data-page-enter={dirName}>
         {children}
       </div>
     </>
