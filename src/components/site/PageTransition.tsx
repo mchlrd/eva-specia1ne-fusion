@@ -45,7 +45,6 @@ export function PageTransition({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {dir !== 0 && <div key={`wipe-${pathname}`} data-page-wipe={dirName} aria-hidden="true" />}
       <div key={pathname} data-page-enter={dirName}>
         {children}
       </div>
