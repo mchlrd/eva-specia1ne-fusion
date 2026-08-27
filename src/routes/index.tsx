@@ -53,14 +53,8 @@ function Index() {
             <span aria-hidden="true">/</span>
             <span>Signal</span>
           </p>
-          <img
-            src={mark}
-            alt="EvaroTech Network Solutions logo"
-            width={193}
-            height={159}
-            className="mt-8 h-14 w-auto object-contain md:h-20"
-          />
           <h1 className="display-xl mt-8 max-w-[19ch]">
+
             Networks, servers and backups—kept working for your business.
           </h1>
           <p className="mt-10 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
