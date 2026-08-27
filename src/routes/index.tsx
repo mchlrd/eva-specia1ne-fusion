@@ -145,7 +145,7 @@ function Index() {
       {/* Page index */}
       <section className="bg-secondary">
         <div className="shell py-20 md:py-28">
-          <Reveal>
+          <Reveal once>
             <p className="label-mono flex items-center gap-3">
               <span className="text-signal">03</span>
               <span aria-hidden="true">/</span>
@@ -154,9 +154,9 @@ function Index() {
             <h2 className="display-lg mt-6 max-w-[24ch]">Where to go next.</h2>
           </Reveal>
 
-          <nav className="mt-12 border-t border-border">
+          <nav className="mt-12 border-t border-border" aria-label="Next pages">
             {nav.map((item, i) => (
-              <Reveal as="div" key={item.to} variant="left" delay={i * 80}>
+              <Reveal as="div" key={item.to} variant="left" delay={i * 80} once>
                 <Link
                   to={item.to}
                   className="hover-slide flex items-baseline justify-between border-b border-border py-6"

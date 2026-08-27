@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useRouterState } from "@tanstack/react-router";
 
 import { LetterGlow } from "./LetterGlow";
 import { SiteHeader } from "./SiteHeader";
@@ -6,11 +7,14 @@ import { SiteFooter } from "./SiteFooter";
 import { PageTransition } from "./PageTransition";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
+  // Keying the page wrapper by pathname gives each navigation a fresh mount,
+  // so the destination starts hidden and blurs into focus as the curtain lifts.
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
     <div id="top" className="min-h-screen">
       <SiteHeader />
       <LetterGlow as="main" className="overflow-x-clip">
-        <PageTransition>{children}</PageTransition>
+        <PageTransition key={pathname}>{children}</PageTransition>
       </LetterGlow>
       <SiteFooter />
     </div>

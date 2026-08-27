@@ -8,7 +8,7 @@ type RevealProps = {
   delay?: number;
   as?: ElementType;
   className?: string;
-  /** Re-hide when the element leaves the viewport so it animates on scroll up too */
+  /** Keep the revealed state after the first entrance to prevent scroll-edge flicker */
   once?: boolean;
 };
 
@@ -50,7 +50,7 @@ export function Reveal({
           }
         }
       },
-      { rootMargin: "-8% 0px -12% 0px", threshold: 0.08 },
+      { rootMargin: "-8% 0px -8% 0px", threshold: 0.08 },
     );
 
     observer.observe(el);
