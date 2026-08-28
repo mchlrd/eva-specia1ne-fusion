@@ -93,6 +93,63 @@ export const principles = [
   },
 ];
 
+export const technologyPartners = [
+  {
+    name: "StorageCraft",
+    logo: "/src/assets/storagecraft.png",
+    website: "https://www.storagecraft.com",
+    description: "Business continuity, image-based backup and fast recovery when systems fail.",
+  },
+  {
+    name: "Veeam",
+    logo: "/src/assets/veeam.png",
+    website: "https://www.veeam.com",
+    description: "Reliable backup and replication for virtual, cloud and physical workloads.",
+  },
+  {
+    name: "Microsoft",
+    logo: "/src/assets/microsoft.png",
+    website: "https://www.microsoft.com",
+    description: "Windows, Azure, security and productivity platforms for modern businesses.",
+  },
+  {
+    name: "SherWeb",
+    logo: "/src/assets/sherweb.png",
+    website: "https://www.sherweb.com",
+    description: "Cloud hosting, Microsoft solutions and managed services backed by Canadian support.",
+  },
+  {
+    name: "Lenovo",
+    logo: "/src/assets/lenovo.png",
+    website: "https://www.lenovo.com",
+    description: "Business laptops, desktops and workstations configured for dependable daily use.",
+  },
+  {
+    name: "SolarWinds",
+    logo: "/src/assets/solarwinds.png",
+    website: "https://www.solarwinds.com",
+    description: "Network monitoring and visibility that helps us find issues before they interrupt work.",
+  },
+  {
+    name: "HP Enterprise",
+    logo: "/src/assets/hpe.png",
+    website: "https://www.hpe.com",
+    description: "Servers, storage and infrastructure engineered to support growing operations.",
+  },
+  {
+    name: "Office 365",
+    logo: "/src/assets/office-365.png",
+    website: "https://www.microsoft.com/microsoft-365",
+    description: "Email, Teams, OneDrive, SharePoint and the connected tools your team uses every day.",
+  },
+  {
+    name: "VMware",
+    logo: "/src/assets/vmware.png",
+    website: "https://www.vmware.com",
+    description: "Virtualized server environments that make infrastructure flexible and resilient.",
+  },
+];
+
 export const nav = [
   { label: "Services", to: "/services" },
   { label: "Managed", to: "/managed" },
