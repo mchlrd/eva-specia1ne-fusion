@@ -1,3 +1,13 @@
+import hpeLogo from "@/assets/hpe.webp";
+import lenovoLogo from "@/assets/lenovo.png";
+import microsoftLogo from "@/assets/microsoft.png";
+import office365Logo from "@/assets/office-365.png";
+import sherwebLogo from "@/assets/sherweb.png";
+import solarwindsLogo from "@/assets/solarwinds.png";
+import storagecraftLogo from "@/assets/storagecraft.png";
+import veeamLogo from "@/assets/veeam.png";
+import vmwareLogo from "@/assets/vmware.png";
+
 export const company = {
   name: "EvaroTech Network Solutions",
   short: "EvaroTech",
@@ -96,55 +106,55 @@ export const principles = [
 export const technologyPartners = [
   {
     name: "StorageCraft",
-    logo: "/src/assets/storagecraft.png",
+    logo: storagecraftLogo,
     website: "https://www.storagecraft.com",
     description: "Business continuity, image-based backup and fast recovery when systems fail.",
   },
   {
     name: "Veeam",
-    logo: "/src/assets/veeam.png",
+    logo: veeamLogo,
     website: "https://www.veeam.com",
     description: "Reliable backup and replication for virtual, cloud and physical workloads.",
   },
   {
     name: "Microsoft",
-    logo: "/src/assets/microsoft.png",
+    logo: microsoftLogo,
     website: "https://www.microsoft.com",
     description: "Windows, Azure, security and productivity platforms for modern businesses.",
   },
   {
     name: "SherWeb",
-    logo: "/src/assets/sherweb.png",
+    logo: sherwebLogo,
     website: "https://www.sherweb.com",
     description: "Cloud hosting, Microsoft solutions and managed services backed by Canadian support.",
   },
   {
     name: "Lenovo",
-    logo: "/src/assets/lenovo.png",
+    logo: lenovoLogo,
     website: "https://www.lenovo.com",
     description: "Business laptops, desktops and workstations configured for dependable daily use.",
   },
   {
     name: "SolarWinds",
-    logo: "/src/assets/solarwinds.png",
+    logo: solarwindsLogo,
     website: "https://www.solarwinds.com",
     description: "Network monitoring and visibility that helps us find issues before they interrupt work.",
   },
   {
     name: "HP Enterprise",
-    logo: "/src/assets/hpe.png",
+    logo: hpeLogo,
     website: "https://www.hpe.com",
     description: "Servers, storage and infrastructure engineered to support growing operations.",
   },
   {
     name: "Office 365",
-    logo: "/src/assets/office-365.png",
+    logo: office365Logo,
     website: "https://www.microsoft.com/microsoft-365",
     description: "Email, Teams, OneDrive, SharePoint and the connected tools your team uses every day.",
   },
   {
     name: "VMware",
-    logo: "/src/assets/vmware.png",
+    logo: vmwareLogo,
     website: "https://www.vmware.com",
     description: "Virtualized server environments that make infrastructure flexible and resilient.",
   },
