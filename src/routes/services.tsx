@@ -48,7 +48,7 @@ function ServicesPage() {
               </p>
               <h2 className="display-lg mt-5">Platforms we work with.</h2>
               <p className="mt-5 text-muted-foreground">
-                Hover over a partner to reveal the platforms, hardware and tools we use to build
+                Click a platform to see the logo, what it does and how we work with it to build
                 dependable systems.
               </p>
             </div>

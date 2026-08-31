@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter, useRouterState } from "@tanstack/react-router";
 
+import { nav } from "./data";
+
 const CURTAIN_FLAG = "__evarotechCurtain";
 const REVEAL_EVENT = "evarotech:page-revealed";
 type Transition = { id: number; label: string; phase: "cover" | "reveal" };
@@ -85,7 +87,9 @@ export function RouteTransitionOverlay() {
           return;
         }
 
-        const label = to === "/" ? "Home" : to.slice(1).replace(/-/g, " ");
+        const label =
+          nav.find((item) => item.to === to)?.label ??
+          (to === "/" ? "Home" : to.slice(1).replace(/-/g, " "));
         // Render the curtain (positioned off-screen below), then animate it up
         // over the OLD page, which is still mounted and visible.
         setTransition({ id, label, phase: "cover" });

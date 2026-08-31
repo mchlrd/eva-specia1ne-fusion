@@ -27,7 +27,7 @@ function ManagedPage() {
     <SiteLayout>
       <PageHeader
         index="03"
-        section="Managed"
+        section="Managed Services"
         title="Managed packages that cover the whole business."
         intro="Ongoing services that keep systems patched, monitored and backed up long after install day."
       />

@@ -27,7 +27,7 @@ function ClientsPage() {
     <SiteLayout>
       <PageHeader
         index="05"
-        section="Clients"
+        section="Client Feedback"
         title="The work, described by the people who called."
       />
 

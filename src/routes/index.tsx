@@ -30,14 +30,6 @@ function Index() {
     telephone: company.phone,
     email: company.email,
     url: "https://evarotech.ca/",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "34 Cattail Crescent",
-      addressLocality: "Trenton",
-      addressRegion: "ON",
-      postalCode: "K8V 0J4",
-      addressCountry: "CA",
-    },
     sameAs: [company.facebook],
     description,
   };

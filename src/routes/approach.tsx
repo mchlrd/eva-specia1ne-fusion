@@ -28,7 +28,7 @@ function ApproachPage() {
     <SiteLayout>
       <PageHeader
         index="04"
-        section="Approach"
+        section="Client Approach"
         title="Assessed on site. Built to keep running."
       />
 

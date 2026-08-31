@@ -109,6 +109,9 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
+    /* Slide-in reveals translate off-screen while waiting to enter; keep
+       their transform from widening the scrollable area. */
+    overflow-x: clip;
   }
 
   body {
@@ -170,8 +173,8 @@
     display: grid;
     place-items: center;
     pointer-events: none;
-    color: var(--ember-foreground);
-    background: linear-gradient(135deg, var(--ember) 0%, var(--ember) 52%, var(--signal) 100%);
+    color: var(--signal-foreground);
+    background: linear-gradient(135deg, var(--signal) 0%, var(--signal) 55%, var(--ember) 100%);
     transform: translateY(100%);
   }
   .route-curtain::before,
@@ -181,7 +184,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: color-mix(in oklab, var(--signal) 70%, white);
+    background: color-mix(in oklab, var(--ember) 80%, white);
     transform: scaleX(0);
     animation: page-rule-in 0.45s 0.22s ease both;
   }
@@ -519,6 +522,14 @@
 .partner-card:hover .partner-card__mark {
   opacity: 1;
   transform: none;
+}
+
+@media (width < 48rem) {
+  /* Nine cards at two columns would leave a stray empty cell — let the
+     last card span the full row instead. */
+  .partner-grid > li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (width >= 48rem) {

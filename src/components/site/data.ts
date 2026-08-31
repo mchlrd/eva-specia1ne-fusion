@@ -1,8 +1,8 @@
-import hpeLogo from "@/assets/hpe.webp";
+import dellLogo from "@/assets/dell.svg";
+import hyperVLogo from "@/assets/hyperv.png";
 import lenovoLogo from "@/assets/lenovo.png";
-import microsoftLogo from "@/assets/microsoft.png";
 import office365Logo from "@/assets/office-365.png";
-import sherwebLogo from "@/assets/sherweb.png";
+import pax8Logo from "@/assets/pax8.png";
 import solarwindsLogo from "@/assets/solarwinds.png";
 import storagecraftLogo from "@/assets/storagecraft.png";
 import veeamLogo from "@/assets/veeam.png";
@@ -14,7 +14,6 @@ export const company = {
   tagline: "Managing partnerships, providing solutions.",
   owner: "Tim J. Kroekenstoel, C.Tech",
   role: "Owner and Operator",
-  address: ["34 Cattail Crescent", "Trenton, Ontario", "K8V 0J4"],
   phone: "+1 (613) 813-6245",
   phoneHref: "tel:+16138136245",
   email: "service@evarotech.ca",
@@ -66,9 +65,9 @@ export const managed = [
 export const testimonials = [
   {
     quote:
-      "I had a massive emergency that needed to be corrected. I reached out for help and got more than help — fast to reply, and everything possible was done to find a solution. Fast, reliable and very honest, trustworthy service.",
-    name: "Dan",
-    where: "Goderich, Ontario",
+      "We have had a very positive experience working with Tim for our organization's IT needs. He is professional, knowledgeable, reliable, and always willing to help when issues arise. His support has helped keep our systems running smoothly and has provided our staff with confidence knowing that assistance is available when needed. He communicates clearly, responds in a timely manner, and takes the time to understand the needs of our organization. We truly appreciate the quality of service, attention to detail, and ongoing support he provides. We would highly recommend his IT services to other organizations looking for dependable and professional technology support.",
+    name: "Kelly Nolan, CEO",
+    where: "St. Leonard's HPE",
   },
   {
     quote:
@@ -117,16 +116,22 @@ export const technologyPartners = [
     description: "Reliable backup and replication for virtual, cloud and physical workloads.",
   },
   {
-    name: "Microsoft",
-    logo: microsoftLogo,
-    website: "https://www.microsoft.com",
-    description: "Windows, Azure, security and productivity platforms for modern businesses.",
+    name: "SolarWinds",
+    logo: solarwindsLogo,
+    website: "https://www.solarwinds.com",
+    description: "Network monitoring and visibility that helps us find issues before they interrupt work.",
   },
   {
-    name: "SherWeb",
-    logo: sherwebLogo,
-    website: "https://www.sherweb.com",
-    description: "Cloud hosting, Microsoft solutions and managed services backed by Canadian support.",
+    name: "Pax8",
+    logo: pax8Logo,
+    website: "https://www.pax8.com",
+    description: "Cloud marketplace and platform for sourcing, managing and billing Microsoft 365 and cloud security services.",
+  },
+  {
+    name: "Dell",
+    logo: dellLogo,
+    website: "https://www.dell.com",
+    description: "PowerEdge servers, storage and business PCs engineered for dependable everyday IT.",
   },
   {
     name: "Lenovo",
@@ -135,22 +140,16 @@ export const technologyPartners = [
     description: "Business laptops, desktops and workstations configured for dependable daily use.",
   },
   {
-    name: "SolarWinds",
-    logo: solarwindsLogo,
-    website: "https://www.solarwinds.com",
-    description: "Network monitoring and visibility that helps us find issues before they interrupt work.",
-  },
-  {
-    name: "HP Enterprise",
-    logo: hpeLogo,
-    website: "https://www.hpe.com",
-    description: "Servers, storage and infrastructure engineered to support growing operations.",
-  },
-  {
-    name: "Office 365",
+    name: "Microsoft 365",
     logo: office365Logo,
     website: "https://www.microsoft.com/microsoft-365",
     description: "Email, Teams, OneDrive, SharePoint and the connected tools your team uses every day.",
+  },
+  {
+    name: "Microsoft HyperV",
+    logo: hyperVLogo,
+    website: "https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-technology-overview",
+    description: "Microsoft's hypervisor platform for running multiple virtual machines on one physical server.",
   },
   {
     name: "VMware",
@@ -162,8 +161,8 @@ export const technologyPartners = [
 
 export const nav = [
   { label: "Services", to: "/services" },
-  { label: "Managed", to: "/managed" },
-  { label: "Approach", to: "/approach" },
-  { label: "Clients", to: "/clients" },
+  { label: "Managed Services", to: "/managed" },
+  { label: "Client Approach", to: "/approach" },
+  { label: "Client Feedback", to: "/clients" },
   { label: "Contact", to: "/contact" },
 ] as const;

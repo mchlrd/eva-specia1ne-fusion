@@ -76,16 +76,6 @@ function ContactPage() {
                   </dd>
                 </div>
                 <div className="border-b border-border py-5">
-                  <dt className="label-mono">Address</dt>
-                  <dd className="mt-2 text-sm leading-relaxed">
-                    {company.address.map((line) => (
-                      <span key={line} className="block">
-                        {line}
-                      </span>
-                    ))}
-                  </dd>
-                </div>
-                <div className="border-b border-border py-5">
                   <dt className="label-mono">Coverage</dt>
                   <dd className="mt-2 text-sm">
                     Trenton, Quinte West, Belleville and surrounding Eastern Ontario

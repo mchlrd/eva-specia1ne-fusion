@@ -42,13 +42,13 @@ export function SiteHeader() {
             height={36}
             className="h-7 w-auto object-contain"
           />
-          <span className="font-display text-lg font-bold tracking-tight">
-            {company.short}
-            <span className="text-ember">.</span>
+          <span className="font-display text-base font-bold tracking-tight xl:text-lg">
+            <span className="text-ember">Evaro</span>
+            <span className="text-signal">Tech</span> Network Solutions
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-4 lg:flex xl:gap-6">
           {nav.map((item) => (
             <Link
               key={item.to}
@@ -62,7 +62,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-5">
-          <a href={company.phoneHref} className="label-mono hidden link-underline sm:inline">
+          <a href={company.phoneHref} className="label-mono hidden link-underline xl:inline">
             {company.phone}
           </a>
           <button
@@ -70,7 +70,7 @@ export function SiteHeader() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
-            className="label-mono flex items-center gap-2 text-foreground md:hidden"
+            className="label-mono flex items-center gap-2 text-foreground lg:hidden"
           >
             {open ? "Close" : "Menu"}
             <span className="grid grid-cols-2 gap-0.5">
@@ -83,7 +83,7 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="shell flex h-[calc(100dvh-4rem)] flex-col justify-between bg-background pb-10 pt-10 md:hidden">
+        <div className="shell flex h-[calc(100dvh-4rem)] flex-col justify-between bg-background pb-10 pt-10 lg:hidden">
           <nav className="flex flex-col">
             {nav.map((item, i) => (
               <Link
