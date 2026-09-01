@@ -14,7 +14,7 @@ export function SiteFooter() {
           <div className="flex items-center gap-4">
             <img
               src={mark}
-              alt="EvaroTech Network Solutions logo"
+              alt="EvaroTech logo"
               width={112}
               height={92}
               loading="lazy"
@@ -22,7 +22,7 @@ export function SiteFooter() {
             />
             <p className="display-md">
               <span className="text-ember">Evaro</span>
-              <span className="text-signal">Tech</span> Network Solutions
+              <span className="text-signal">Tech</span>
             </p>
           </div>
           <p className="label-mono max-w-xs">{company.tagline}</p>

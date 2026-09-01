@@ -37,14 +37,14 @@ export function SiteHeader() {
         >
           <img
             src={mark}
-            alt="EvaroTech Network Solutions logo"
+            alt="EvaroTech logo"
             width={44}
             height={36}
             className="h-7 w-auto object-contain"
           />
           <span className="font-display text-base font-bold tracking-tight xl:text-lg">
             <span className="text-ember">Evaro</span>
-            <span className="text-signal">Tech</span> Network Solutions
+            <span className="text-signal">Tech</span>
           </span>
         </Link>
 

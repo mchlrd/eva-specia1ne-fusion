@@ -31,7 +31,7 @@ function ContactPage() {
         index="06"
         section="Contact"
         title="Book a free assessment and no-obligation quote."
-        intro="We will come to you, assess your business technology needs and recommend what to do next."
+        intro="EvaroTech Network Solutions will come to you, assess your business technology needs and recommend what to do next."
       />
 
       <section className="rule-top">
