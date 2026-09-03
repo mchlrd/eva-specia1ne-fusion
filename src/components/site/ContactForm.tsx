@@ -2,6 +2,7 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { company } from "./data";
+import { sendEnquiry } from "@/lib/contact-enquiry";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Please add your name").max(100, "Name is too long"),
@@ -23,6 +24,8 @@ const fields: { key: Field; label: string; type: "input" | "textarea"; optional?
   { key: "message", label: "What do you need?", type: "textarea" },
 ];
 
+type Status = "idle" | "sending" | "sent" | "error";
+
 export function ContactForm() {
   const [values, setValues] = useState<Record<Field, string>>({
     name: "",
@@ -31,10 +34,14 @@ export function ContactForm() {
     message: "",
   });
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (status === "sending") return;
+
     const parsed = schema.safeParse(values);
     if (!parsed.success) {
       const next: Partial<Record<Field, string>> = {};
@@ -45,35 +52,32 @@ export function ContactForm() {
       setErrors(next);
       return;
     }
+
     setErrors({});
-    const d = parsed.data;
-    const body = [
-      `Name: ${d.name}`,
-      `Email: ${d.email}`,
-      d.company ? `Business: ${d.company}` : null,
-      "",
-      d.message,
-    ]
-      .filter(Boolean)
-      .join("\n");
-    const href = `mailto:${company.email}?subject=${encodeURIComponent(
-      `Assessment request — ${d.name}`,
-    )}&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
-    setSent(true);
+    setStatus("sending");
+    setErrorMessage(null);
+    try {
+      await sendEnquiry({ data: { ...parsed.data, website: honeypot } });
+      setStatus("sent");
+    } catch (err) {
+      setStatus("error");
+      setErrorMessage(
+        err instanceof Error && err.message
+          ? err.message
+          : "We couldn't send your message — please try again, or email " +
+              `${company.email} directly.`,
+      );
+    }
   };
 
-  if (sent) {
+  if (status === "sent") {
     return (
       <div className="border-t-2 border-signal pt-8">
-        <p className="display-md text-signal">Message ready.</p>
+        <p className="display-md text-signal">Message sent.</p>
         <p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Your email app should be open with the details filled in — press send there. If nothing
-          happened, write to{" "}
-          <a href={`mailto:${company.email}`} className="link-underline text-foreground">
-            {company.email}
-          </a>{" "}
-          or call {company.phone}.
+          Thanks{values.name ? `, ${values.name.split(" ")[0]}` : ""} — your enquiry is
+          on its way to the EvaroTech team. We usually get back to you within one
+          business day. For anything urgent, call {company.phone}.
         </p>
       </div>
     );
@@ -114,11 +118,28 @@ export function ContactForm() {
         ))}
       </div>
 
+      {/* Honeypot — hidden from people, irresistible to bots. */}
+      <input
+        type="text"
+        name="website"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        autoComplete="off"
+        tabIndex={-1}
+        aria-hidden="true"
+        className="hidden"
+      />
+
+      {status === "error" && (
+        <p className="label-mono mt-8 text-destructive">{errorMessage}</p>
+      )}
+
       <button
         type="submit"
-        className="bracket hover-glow mt-10 font-display text-2xl font-bold tracking-tight md:text-3xl"
+        disabled={status === "sending"}
+        className="bracket hover-glow mt-10 font-display text-2xl font-bold tracking-tight disabled:opacity-50 md:text-3xl"
       >
-        Send enquiry
+        {status === "sending" ? "Sending…" : "Send enquiry"}
       </button>
     </form>
   );
