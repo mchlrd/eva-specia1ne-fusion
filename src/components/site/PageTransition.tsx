@@ -87,9 +87,12 @@ export function RouteTransitionOverlay() {
           return;
         }
 
+        // Deep links can carry a query string (?pkg=1); the curtain label
+        // should name the destination page, not the raw URL.
+        const pagePath = (to.split("?")[0] || "/").replace(/\/$/, "") || "/";
         const label =
-          nav.find((item) => item.to === to)?.label ??
-          (to === "/" ? "Home" : to.slice(1).replace(/-/g, " "));
+          nav.find((item) => item.to === pagePath)?.label ??
+          (pagePath === "/" ? "Home" : pagePath.slice(1).replace(/-/g, " "));
         // Render the curtain (positioned off-screen below), then animate it up
         // over the OLD page, which is still mounted and visible.
         setTransition({ id, label, phase: "cover" });

@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { PageHeader, SiteLayout } from "@/components/site/SiteLayout";
+import { ApproachSteps } from "@/components/site/ApproachSteps";
 import { Reveal } from "@/components/site/Reveal";
-import { principles } from "@/components/site/data";
-import rackImage from "@/assets/network-rack.jpg";
+import approachSite from "@/assets/approach-site.jpg";
 
 const title = "Our Approach — Assessed On Site, Built To Keep Running | EvaroTech";
 const description =
@@ -34,39 +34,28 @@ function ApproachPage() {
 
       <section className="rule-top">
         <div className="shell grid gap-14 py-16 md:grid-cols-2 md:py-24">
-          <ol className="border-t border-border">
-            {principles.map((p, i) => (
-              <Reveal
-                as="li"
-                key={p.title}
-                variant="left"
-                delay={Math.min(i, 6) * 90}
-                className="hover-slide border-b border-border py-6"
-              >
-                <div className="flex items-baseline gap-4">
-                  <span className="label-mono text-ember">0{i + 1}</span>
-                  <div>
-                    <h2 className="font-display text-lg font-semibold tracking-tight">
-                      {p.title}
-                    </h2>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </ol>
+          <div>
+            <p className="label-mono mb-8 flex items-center gap-3">
+              <span className="text-signal">01</span>
+              <span aria-hidden="true">/</span>
+              <span>Steps</span>
+              <span aria-hidden="true">/</span>
+              <span>Select one to see how it works</span>
+            </p>
+            <ApproachSteps />
+          </div>
 
           <Reveal variant="scale" className="hover-zoom md:pt-6">
             <img
-              src={rackImage}
-              alt="Network cabinet with switches, patch panels and neatly bundled ethernet cabling"
+              src={approachSite}
+              alt="IT technician working at a computer inside a server room"
               width={1600}
-              height={1008}
+              height={1068}
               loading="lazy"
               className="w-full object-cover"
             />
             <p className="label-mono mt-4">
-              Fig. 01 — Structured cabling and rack build, client site
+              Fig. 01 — Working on site, from assessment to ongoing care
             </p>
           </Reveal>
         </div>

@@ -734,3 +734,186 @@
     text-shadow: 0 0 12px color-mix(in oklab, var(--signal) 26%, transparent);
   }
 }
+
+/* --- Reading progress hairline under the fixed header --- */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 60;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--ember), var(--signal));
+  pointer-events: none;
+}
+
+/* --- Branded scrollbar (progressive enhancement) --- */
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: color-mix(in oklab, var(--hairline) 35%, transparent);
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--signal) 42%, transparent);
+  border: 3px solid var(--background);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--signal);
+}
+@supports (scrollbar-color: auto) {
+  * {
+    scrollbar-color: color-mix(in oklab, var(--signal) 55%, var(--hairline)) color-mix(
+        in oklab,
+        var(--hairline) 35%,
+        transparent
+      );
+    scrollbar-width: thin;
+  }
+}
+
+/* --- Accessible focus rings for interactive elements --- */
+
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+/* --- Hover arrow mark for cards --- */
+
+@utility card-mark {
+  position: relative;
+  &::before {
+    content: "↗";
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-size: 1.1rem;
+    color: var(--ember);
+    opacity: 0;
+    transform: translate(-0.35rem, 0.35rem);
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover::before,
+  &:focus-visible::before {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --- Managed package overlay (page that opens over the list) --- */
+
+.pkg-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  display: grid;
+  place-items: center;
+  padding: 0.75rem;
+  background: color-mix(in oklab, var(--ink) 68%, transparent);
+  backdrop-filter: blur(5px);
+  animation: pkg-overlay-in 0.3s ease both;
+}
+
+.pkg-modal[data-closing="true"] {
+  animation: pkg-overlay-out 0.26s ease both;
+}
+
+.pkg-modal[data-closing="true"] .pkg-panel {
+  animation: pkg-panel-out 0.26s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+.pkg-panel {
+  position: relative;
+  display: flex;
+  width: min(88rem, 100%);
+  height: min(96svh, 62rem);
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow:
+    0 1.5rem 5rem -1.5rem color-mix(in oklab, var(--ink) 70%, transparent),
+    0 0 0 1px var(--hairline);
+  animation: pkg-panel-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.pkg-panel__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1.25rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.pkg-close {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid var(--hairline);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.3s ease;
+}
+
+.pkg-close:hover,
+.pkg-close:focus-visible {
+  background: var(--signal);
+  color: var(--signal-foreground);
+  transform: rotate(90deg);
+}
+
+.pkg-panel__scroll {
+  overflow-y: auto;
+}
+
+.pkg-panel__body {
+  padding: clamp(1.75rem, 5vw, 4rem) clamp(1.25rem, 5vw, 4.5rem) clamp(2.5rem, 6vw, 5rem);
+}
+
+@keyframes pkg-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pkg-overlay-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes pkg-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem) scale(0.985);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+@keyframes pkg-panel-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.98);
+    filter: blur(5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pkg-modal,
+  .pkg-panel {
+    animation: none;
+  }
+}

@@ -90,16 +90,29 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <Reveal as="div" variant="fade" once delay={320} className="shell flex flex-wrap items-center justify-between gap-3 border-t border-border py-5">
+      <Reveal as="div" variant="fade" once delay={320} className="shell flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-border py-5">
         <p className="label-mono">
           <span className="mr-2 inline-block size-1.5 translate-y-[-1px] bg-ember" />
           Serving Trenton, Quinte West & Eastern Ontario
         </p>
-        <p className="label-mono">
-          © {new Date().getFullYear()}{" "}
-          <span className="text-ember">Evaro</span>
-          <span className="text-signal">Tech</span>
-        </p>
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+          <button
+            type="button"
+            onClick={() => {
+              const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+            }}
+            className="label-mono link-underline inline-flex items-center gap-2"
+          >
+            Back to top
+            <span aria-hidden="true">↑</span>
+          </button>
+          <p className="label-mono">
+            © {new Date().getFullYear()}{" "}
+            <span className="text-ember">Evaro</span>
+            <span className="text-signal">Tech</span>
+          </p>
+        </div>
       </Reveal>
     </LetterGlow>
   );

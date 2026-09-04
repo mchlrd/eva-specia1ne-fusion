@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Reveal } from "@/components/site/Reveal";
-import { company, nav, services } from "@/components/site/data";
+import { company, managed, nav, services } from "@/components/site/data";
 
 const title = "EvaroTech Network Solutions — Managed IT in Trenton, Ontario";
 const description =
@@ -133,12 +133,58 @@ function Index() {
         </div>
       </section>
 
+      {/* Managed teaser */}
+      <section className="bg-primary text-primary-foreground">
+        <div className="shell py-20 md:py-28">
+          <Reveal className="flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p className="label-mono flex items-center gap-3">
+                <span className="text-ember">03</span>
+                <span aria-hidden="true">/</span>
+                <span>Managed Services</span>
+              </p>
+              <h2 className="display-lg mt-6 max-w-[24ch]">
+                Kept running, long after install day.
+              </h2>
+            </div>
+            <Link to="/managed" className="label-mono link-underline">
+              All managed packages →
+            </Link>
+          </Reveal>
+
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {managed.map((m, i) => (
+              <Link
+                key={m.title}
+                to="/managed"
+                search={{ pkg: i + 1 }}
+                className="group block h-full"
+                aria-label={`Open ${m.title} package details`}
+              >
+                <Reveal
+                  as="article"
+                  variant="up"
+                  delay={i * 100}
+                  className="card-mark relative flex h-full flex-col border border-primary-foreground/15 bg-white/[0.04] p-7 transition-colors duration-300 hover:border-ember/70 md:p-8"
+                >
+                  <span className="label-mono text-ember">Package 0{i + 1}</span>
+                  <h3 className="display-md mt-8">{m.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-primary-foreground/70">
+                    {m.body}
+                  </p>
+                </Reveal>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Page index */}
       <section className="bg-secondary">
         <div className="shell py-20 md:py-28">
           <Reveal once>
             <p className="label-mono flex items-center gap-3">
-              <span className="text-signal">03</span>
+              <span className="text-signal">04</span>
               <span aria-hidden="true">/</span>
               <span>Index</span>
             </p>

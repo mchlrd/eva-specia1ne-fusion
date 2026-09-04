@@ -1,14 +1,23 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { PageHeader, SiteLayout } from "@/components/site/SiteLayout";
+import { ManagedPackages } from "@/components/site/ManagedPackages";
 import { Reveal } from "@/components/site/Reveal";
-import { managed } from "@/components/site/data";
 
 const title = "Managed IT Packages — Security, Backup & Microsoft 365 | EvaroTech";
 const description =
   "Managed security, managed backup and Microsoft 365 mail and apps — monitored, patched and verified so your business keeps running.";
 
+type ManagedSearch = { pkg?: number };
+
+/** Accept ?pkg=N so the home page teasers can deep-link to a package. */
+const validateSearch = (search: Record<string, unknown>): ManagedSearch => {
+  const n = Number(search["pkg"]);
+  return Number.isInteger(n) && n >= 1 && n <= 3 ? { pkg: n } : {};
+};
+
 export const Route = createFileRoute("/managed")({
+  validateSearch,
   head: () => ({
     meta: [
       { title },
@@ -23,6 +32,8 @@ export const Route = createFileRoute("/managed")({
 });
 
 function ManagedPage() {
+  const { pkg } = Route.useSearch();
+
   return (
     <SiteLayout>
       <PageHeader
@@ -34,23 +45,15 @@ function ManagedPage() {
 
       <section className="bg-secondary">
         <div className="shell py-16 md:py-24">
-          <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-3">
-            {managed.map((m, i) => (
-              <Reveal
-                as="article"
-                key={m.title}
-                variant="scale"
-                delay={Math.min(i, 6) * 90}
-                className="hover-lift flex flex-col justify-between border-t-2 border-signal bg-card p-8 hover:border-ember"
-              >
-                <span className="label-mono">Package 0{i + 1}</span>
-                <div className="mt-16">
-                  <h2 className="display-md">{m.title}</h2>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{m.body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <p className="label-mono mb-10 flex items-center gap-3">
+            <span className="text-signal">01</span>
+            <span aria-hidden="true">/</span>
+            <span>Packages</span>
+            <span aria-hidden="true">/</span>
+            <span>Select one to open its details</span>
+          </p>
+
+          <ManagedPackages autoOpen={pkg ? pkg - 1 : undefined} />
 
           <Reveal className="mt-14">
             <Link

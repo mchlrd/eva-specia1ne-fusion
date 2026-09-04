@@ -42,7 +42,13 @@ function ClientsPage() {
                 delay={i * 110}
                 className="hover-lift border-t border-ember pt-6"
               >
-                <p className="text-base leading-relaxed">{t.quote}</p>
+                <span
+                  aria-hidden="true"
+                  className="block font-display text-5xl font-bold leading-none text-ember/90"
+                >
+                  “
+                </span>
+                <p className="mt-4 text-base leading-relaxed">{t.quote}</p>
                 <footer className="label-mono mt-6 text-primary-foreground/70">
                   {t.name} — {t.where}
                 </footer>
