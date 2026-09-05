@@ -1,129 +1,101 @@
-import { useState } from "react";
-import { Link } from "@tanstack/react-router";
-
 import { principles } from "./data";
-import { LetterGlow } from "./LetterGlow";
-import { Overlay } from "./Overlay";
+import { Reveal } from "./Reveal";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export function ApproachSteps() {
-  const [selected, setSelected] = useState<number | null>(null);
-  const step = selected === null ? null : principles[selected];
-
   return (
-    <>
-      <ol className="border-t border-border">
-        {principles.map((p, i) => (
-          <li key={p.title} className="group border-b border-border">
-            <button
-              type="button"
-              onClick={() => setSelected(i)}
-              aria-haspopup="dialog"
-              className="relative flex w-full items-center justify-center px-10 py-8 text-center transition-colors duration-300 hover:bg-signal/[0.06]"
+    <div className="relative">
+      {/* Centre timeline rail (desktop) */}
+      <span
+        aria-hidden="true"
+        className="absolute bottom-6 left-1/2 top-6 hidden w-px -translate-x-1/2 bg-border md:block"
+      />
+
+      <ol>
+        {principles.map((p, i) => {
+          const reversed = i % 2 === 1;
+          return (
+            <li
+              key={p.title}
+              className="relative overflow-hidden border-t border-border py-16 md:py-24"
             >
-              <span className="label-mono absolute left-0 top-1/2 -translate-y-1/2 text-ember">
-                {pad(i + 1)}
-              </span>
-              <span className="display-md transition-colors duration-300 group-hover:text-signal">
-                {p.title}
-              </span>
+              {/* Node on the rail */}
               <span
                 aria-hidden="true"
-                className="absolute right-0 top-1/2 -translate-y-1/2 text-signal opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
+                className="absolute left-1/2 top-1/2 hidden h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal shadow-[0_0_0_5px] shadow-signal/15 md:block"
+              />
+
+              {/* Ghost number */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 -top-3 select-none bg-gradient-to-b from-ink/10 via-ink/[0.05] to-transparent bg-clip-text text-center font-display text-[6.5rem] font-bold leading-none tracking-tighter text-transparent md:text-[11rem]"
               >
-                ↗
+                {pad(i + 1)}
               </span>
-            </button>
-          </li>
-        ))}
-      </ol>
 
-      {step && selected !== null && (
-        <Overlay
-          open
-          onRequestClose={() => setSelected(null)}
-          labelledBy={`step-title-${selected}`}
-          closeLabel="Close step details"
-          bar={
-            <p className="label-mono flex items-center gap-3">
-              <span className="text-ember">Client Approach</span>
-              <span aria-hidden="true">/</span>
-              <span>Step {pad(selected + 1)}</span>
-            </p>
-          }
-        >
-          <LetterGlow>
-            <div className="grid gap-x-12 gap-y-10 lg:grid-cols-12 lg:items-start">
-              <div className="rise lg:col-span-7" style={{ animationDelay: "0.05s" }}>
-                <h2 id={`step-title-${selected}`} className="display-xl max-w-[18ch]">
-                  {step.title}
-                </h2>
-                <p className="mt-8 max-w-[52ch] text-base leading-relaxed text-muted-foreground md:text-lg">
-                  {step.body}
-                </p>
-              </div>
-
-              <div className="lg:col-span-5">
-                <figure
-                  className="rise overflow-hidden rounded-md border border-border"
-                  style={{ animationDelay: "0.15s" }}
+              <div className="shell relative grid items-center gap-x-14 gap-y-10 md:grid-cols-12">
+                <Reveal
+                  variant={reversed ? "right" : "left"}
+                  className={
+                    reversed
+                      ? "md:col-span-5 md:col-start-7"
+                      : "md:col-span-5"
+                  }
                 >
-                  <img
-                    src={step.image}
-                    alt={step.alt}
-                    loading="lazy"
-                    decoding="async"
-                    className="aspect-[3/2] w-full object-cover"
-                  />
-                  <figcaption className="label-mono flex items-baseline gap-2.5 border-t border-border bg-secondary px-4 py-3">
-                    <span className="text-ember">Fig. {pad(selected + 1)}</span>
+                  <p className="label-mono flex items-center gap-3">
+                    <span className="text-ember">Step {pad(i + 1)}</span>
                     <span aria-hidden="true">/</span>
-                    <span>{step.caption}</span>
-                  </figcaption>
-                </figure>
+                    <span>{pad(i + 1)} of {pad(principles.length)}</span>
+                  </p>
+                  <h2 className="display-xl mt-5 max-w-[14ch]">{p.title}</h2>
+                  <p className="mt-6 max-w-[46ch] text-base leading-relaxed text-muted-foreground md:text-lg">
+                    {p.body}
+                  </p>
+                  <ul className="mt-8 grid gap-x-10 gap-y-3.5 md:grid-cols-2">
+                    {p.points.map((point) => (
+                      <li
+                        key={point}
+                        className="grid grid-cols-[auto_1fr] gap-x-3 text-sm leading-snug text-muted-foreground md:text-base"
+                      >
+                        <span aria-hidden="true" className="label-mono pt-px text-signal">
+                          +
+                        </span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Reveal>
+
+                <Reveal
+                  variant={reversed ? "left" : "right"}
+                  delay={140}
+                  className={
+                    reversed
+                      ? "md:col-span-6 md:row-start-1"
+                      : "md:col-span-6 md:col-start-7 md:row-start-1"
+                  }
+                >
+                  <figure className="hover-zoom overflow-hidden rounded-md border border-border">
+                    <img
+                      src={p.image}
+                      alt={p.alt}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[3/2] w-full object-cover"
+                    />
+                    <figcaption className="label-mono flex items-baseline gap-2.5 border-t border-border bg-secondary px-4 py-3">
+                      <span className="text-ember">Fig. {pad(i + 1)}</span>
+                      <span aria-hidden="true">/</span>
+                      <span>{p.caption}</span>
+                    </figcaption>
+                  </figure>
+                </Reveal>
               </div>
-            </div>
-
-            <div className="rise mt-12 md:mt-16" style={{ animationDelay: "0.25s" }}>
-              <p className="label-mono flex items-center gap-3 border-t border-border pt-5">
-                <span className="text-signal">In this step</span>
-                <span aria-hidden="true">/</span>
-                <span>{step.points.length} things</span>
-              </p>
-              <ul className="mt-5 grid gap-x-12 gap-y-4 md:grid-cols-3">
-                {step.points.map((point) => (
-                  <li
-                    key={point}
-                    className="grid grid-cols-[auto_1fr] gap-x-3 text-sm leading-snug text-muted-foreground md:text-base"
-                  >
-                    <span aria-hidden="true" className="label-mono pt-px text-signal">
-                      +
-                    </span>
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div
-              className="rise mt-12 flex flex-wrap items-end justify-between gap-6 border-t border-border pt-8 md:mt-16"
-              style={{ animationDelay: "0.32s" }}
-            >
-              <p className="label-mono max-w-md">
-                Every engagement starts the same way — with a visit and an honest read of
-                where things stand.
-              </p>
-              <Link
-                to="/contact"
-                className="bracket hover-glow font-display text-2xl font-bold tracking-tight md:text-3xl"
-              >
-                Start with an assessment
-              </Link>
-            </div>
-          </LetterGlow>
-        </Overlay>
-      )}
-    </>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
   );
 }

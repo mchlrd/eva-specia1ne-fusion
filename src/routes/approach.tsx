@@ -33,19 +33,27 @@ function ApproachPage() {
       />
 
       <section className="rule-top">
-        <div className="shell grid gap-14 py-16 md:grid-cols-2 md:py-24">
-          <div>
-            <p className="label-mono mb-8 flex items-center gap-3">
+        <div className="shell grid items-center gap-14 py-16 md:grid-cols-12 md:py-24">
+          <Reveal variant="up" className="md:col-span-6">
+            <p className="label-mono flex items-center gap-3">
               <span className="text-signal">01</span>
               <span aria-hidden="true">/</span>
               <span>Steps</span>
               <span aria-hidden="true">/</span>
-              <span>Select one to see how it works</span>
+              <span>Four steps, one way of working</span>
             </p>
-            <ApproachSteps />
-          </div>
+            <h2 className="display-md mt-6 max-w-[18ch]">
+              Every engagement runs the same way — from the first visit to
+              ongoing care.
+            </h2>
+            <p className="mt-6 max-w-[52ch] text-base leading-relaxed text-muted-foreground md:text-lg">
+              No shortcuts, no surprises: we assess on site, size the solution
+              to your operation, build it to vendor best practice, and stay
+              with you afterwards. Scroll through the four steps below.
+            </p>
+          </Reveal>
 
-          <Reveal variant="scale" className="hover-zoom md:pt-6">
+          <Reveal variant="scale" delay={120} className="hover-zoom md:col-span-6">
             <img
               src={approachSite}
               alt="IT technician working at a computer inside a server room"
@@ -60,6 +68,8 @@ function ApproachPage() {
           </Reveal>
         </div>
       </section>
+
+      <ApproachSteps />
 
       <section className="rule-top">
         <div className="shell py-14">
