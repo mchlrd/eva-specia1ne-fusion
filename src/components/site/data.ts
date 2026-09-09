@@ -279,9 +279,9 @@ export const technologyPartners = [
 ];
 
 export const nav = [
+  { label: "Home", to: "/" },
   { label: "Services", to: "/services" },
   { label: "Managed Services", to: "/managed" },
   { label: "Client Approach", to: "/approach" },
-  { label: "Client Feedback", to: "/clients" },
   { label: "Contact", to: "/contact" },
 ] as const;
