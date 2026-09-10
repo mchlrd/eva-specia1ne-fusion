@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Reveal } from "@/components/site/Reveal";
-import { company, nav, testimonials } from "@/components/site/data";
+import { company, testimonials } from "@/components/site/data";
 
 const title = "EvaroTech Network Solutions — Managed IT in Trenton, Ontario";
 const description =
@@ -70,8 +70,8 @@ function Index() {
       </section>
 
       {/* Questions band */}
-      <section className="rule-top bg-primary text-primary-foreground">
-        <div className="shell grid gap-px py-0 md:grid-cols-3">
+      <section className="rule-top bg-background">
+        <div className="shell grid py-0 md:grid-cols-3 md:divide-x md:divide-border">
           {[
             "Do you have the right solutions in place to protect your business?",
             "Are you confident in the integrity and security of your data?",
@@ -90,41 +90,13 @@ function Index() {
         </div>
       </section>
 
-      {/* Page index */}
-      <section className="bg-secondary">
-        <div className="shell py-20 md:py-28">
-          <Reveal once>
-            <p className="label-mono flex items-center gap-3">
-              <span className="text-signal">02</span>
-              <span aria-hidden="true">/</span>
-              <span>Index</span>
-            </p>
-            <h2 className="display-lg mt-6 max-w-[24ch]">Where to go next.</h2>
-          </Reveal>
-
-          <nav className="mt-12 border-t border-border" aria-label="Next pages">
-            {nav.map((item, i) => (
-              <Reveal as="div" key={item.to} variant="left" delay={i * 80} once>
-                <Link
-                  to={item.to}
-                  className="hover-slide flex items-baseline justify-between border-b border-border py-6"
-                >
-                  <span className="display-md">{item.label}</span>
-                  <span className="label-mono text-ember">0{i + 1}</span>
-                </Link>
-              </Reveal>
-            ))}
-          </nav>
-        </div>
-      </section>
-
       {/* Client feedback */}
       <section className="bg-primary text-primary-foreground">
         <div className="shell py-20 md:py-28">
           <Reveal className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <p className="label-mono flex items-center gap-3">
-                <span className="text-ember">03</span>
+                <span className="text-ember">02</span>
                 <span aria-hidden="true">/</span>
                 <span>Client Feedback</span>
               </p>
