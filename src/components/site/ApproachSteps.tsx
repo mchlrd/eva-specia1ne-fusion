@@ -34,13 +34,13 @@ export function ApproachSteps() {
                 {pad(i + 1)}
               </span>
 
-              <div className="shell relative grid items-center gap-x-14 gap-y-10 md:grid-cols-12">
+              <div className="shell relative grid items-center gap-x-8 gap-y-10 md:grid-cols-12">
                 <Reveal
                   variant={reversed ? "right" : "left"}
                   className={
                     reversed
-                      ? "md:col-span-5 md:col-start-7"
-                      : "md:col-span-5"
+                      ? "md:col-span-6 md:col-start-7"
+                      : "md:col-span-6"
                   }
                 >
                   <p className="label-mono flex items-center gap-3">
@@ -48,7 +48,7 @@ export function ApproachSteps() {
                     <span aria-hidden="true">/</span>
                     <span>{pad(i + 1)} of {pad(principles.length)}</span>
                   </p>
-                  <h2 className="display-xl mt-5 max-w-[14ch]">{p.title}</h2>
+                  <h2 className="display-lg mt-5 max-w-[14ch]">{p.title}</h2>
                   <p className="mt-6 max-w-[46ch] text-base leading-relaxed text-muted-foreground md:text-lg">
                     {p.body}
                   </p>
