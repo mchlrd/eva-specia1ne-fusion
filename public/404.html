@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Page not found — EvaroTech</title>
+    <!-- Inline styles on purpose: this page must render on any web server,
+         with no build step and no dependency on the site's bundler. -->
+    <style>
+      :root {
+        --paper: oklch(0.985 0.002 230);
+        --ink: oklch(0.19 0.014 235);
+        --signal: oklch(0.621 0.106 206);
+        --ember: oklch(0.752 0.173 60);
+        --hairline: oklch(0.19 0.014 235 / 16%);
+        --muted: oklch(0.19 0.014 235 / 62%);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      main {
+        width: 100%;
+        max-width: 62rem;
+        margin: 0 auto;
+        padding: 4rem 1.5rem;
+      }
+      .rule {
+        border-top: 1px solid var(--hairline);
+      }
+      .label {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        padding: 1rem 0;
+        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+        font-size: 0.6875rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .label b {
+        color: var(--ember);
+        font-weight: 500;
+      }
+      h1 {
+        margin: 2.5rem 0 0;
+        font-size: clamp(3rem, 11vw, 8rem);
+        line-height: 0.92;
+        letter-spacing: -0.03em;
+        font-weight: 700;
+      }
+      h1 span {
+        color: var(--signal);
+      }
+      p {
+        max-width: 46ch;
+        margin: 1.75rem 0 0;
+        font-size: 1.0625rem;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+      a.home {
+        display: inline-block;
+        margin-top: 2.5rem;
+        padding-bottom: 0.25rem;
+        border-bottom: 2px solid var(--signal);
+        color: var(--ink);
+        font-size: 1.375rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+        transition:
+          color 200ms ease,
+          border-color 200ms ease;
+      }
+      a.home:hover {
+        color: var(--signal);
+        border-color: var(--ember);
+      }
+      footer {
+        margin-top: 4rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--hairline);
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.6875rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="rule"></div>
+      <div class="label"><b>404</b><span>/</span><span>Not found</span></div>
+      <h1>That page <span>isn't here.</span></h1>
+      <p>
+        The link may be out of date, or the address may have a typo in it. The rest of the site is
+        still where you left it.
+      </p>
+      <a class="home" href="/">Back to the home page</a>
+      <footer>EvaroTech &middot; evarotech.ca</footer>
+    </main>
+  </body>
+</html>

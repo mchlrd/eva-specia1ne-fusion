@@ -3,6 +3,11 @@
 This is the deployment for running the site on your own Windows Server, with IIS
 as the public front door and Node running the application behind it.
 
+> **Simpler alternative:** the site can also be published as plain files, with no
+> Node, no service, no reverse proxy and no URL Rewrite — IIS just serves a folder,
+> which is how evarotech.ca is hosted today. See `deploy/STATIC-HOSTING.md`. Use
+> that one unless you specifically want Node running on the server.
+
 ```
    visitor
       │  https://evarotech.ca  (and https://www.evarotech.ca)

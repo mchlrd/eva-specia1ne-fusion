@@ -2,7 +2,6 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { company } from "./data";
-import { sendEnquiry } from "@/lib/contact-enquiry";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Please add your name").max(100, "Name is too long"),
@@ -23,6 +22,61 @@ const fields: { key: Field; label: string; type: "input" | "textarea"; optional?
   { key: "company", label: "Business", type: "input", optional: true },
   { key: "message", label: "What do you need?", type: "textarea" },
 ];
+
+/**
+ * Where the form posts, decided when the site is built.
+ *
+ * Managed hosting and the Node deploy leave this unset and call the server
+ * function below. A static deployment has no server function, so its build sets
+ * the value (see vite.static.config.ts) and the form posts to a small same-origin
+ * handler instead — the only server-side piece of a static site.
+ */
+const ENQUIRY_ENDPOINT = (import.meta.env as Record<string, string | undefined>)[
+  "VITE_CONTACT_ENDPOINT"
+];
+
+type Enquiry = {
+  name: string;
+  email: string;
+  company?: string | undefined;
+  message: string;
+};
+
+/**
+ * Sends the enquiry by whichever route this build was configured for. Posts
+ * form-encoded rather than JSON on purpose: it is a "simple" request, so the
+ * browser skips the CORS preflight, and the handler needs no JSON parser.
+ */
+async function deliverEnquiry(payload: Enquiry, honeypot: string): Promise<void> {
+  if (!ENQUIRY_ENDPOINT) {
+    // Imported lazily so a static build — where this branch is dead code —
+    // doesn't ship the server-function plumbing at all.
+    const { sendEnquiry } = await import("@/lib/contact-enquiry");
+    await sendEnquiry({ data: { ...payload, website: honeypot } });
+    return;
+  }
+
+  const body = new URLSearchParams({
+    name: payload.name,
+    email: payload.email,
+    message: payload.message,
+    website: honeypot,
+  });
+  if (payload.company) body.set("company", payload.company);
+
+  const response = await fetch(ENQUIRY_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+    body,
+  });
+
+  if (response.ok) return;
+
+  const reply = (await response.json().catch(() => null)) as { error?: string } | null;
+  throw new Error(
+    reply?.error ?? "We couldn't send your message — please try again, or email us directly.",
+  );
+}
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -57,7 +111,7 @@ export function ContactForm() {
     setStatus("sending");
     setErrorMessage(null);
     try {
-      await sendEnquiry({ data: { ...parsed.data, website: honeypot } });
+      await deliverEnquiry(parsed.data, honeypot);
       setStatus("sent");
     } catch (err) {
       setStatus("error");
@@ -75,9 +129,9 @@ export function ContactForm() {
       <div className="border-t-2 border-signal pt-8">
         <p className="display-md text-signal">Message sent.</p>
         <p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Thanks{values.name ? `, ${values.name.split(" ")[0]}` : ""} — your enquiry is
-          on its way to the EvaroTech team. We usually get back to you within one
-          business day. For anything urgent, call {company.phone}.
+          Thanks{values.name ? `, ${values.name.split(" ")[0]}` : ""} — your enquiry is on its way
+          to the EvaroTech team. We usually get back to you within one business day. For anything
+          urgent, call {company.phone}.
         </p>
       </div>
     );
@@ -130,9 +184,7 @@ export function ContactForm() {
         className="hidden"
       />
 
-      {status === "error" && (
-        <p className="label-mono mt-8 text-destructive">{errorMessage}</p>
-      )}
+      {status === "error" && <p className="label-mono mt-8 text-destructive">{errorMessage}</p>}
 
       <button
         type="submit"

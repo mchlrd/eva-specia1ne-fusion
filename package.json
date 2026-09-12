@@ -8,6 +8,8 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "build:selfhosted": "vite build --config vite.selfhosted.config.ts",
+    "build:static": "vite build --config vite.static.config.ts && node scripts/export-static.mjs",
+    "export:static": "node scripts/export-static.mjs",
     "start:selfhosted": "node .output/server/index.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
