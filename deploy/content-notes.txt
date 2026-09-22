@@ -1,0 +1,37 @@
+// ============================================================================
+//  EVAROTECH WEBSITE TEXT - the words on the site
+// ============================================================================
+//
+//  This one file holds the text of every page. Change it here, save, and press
+//  Ctrl+F5 in the browser. Nothing needs to be restarted or rebuilt, and no
+//  other file has to be touched.
+//
+//  How to edit it safely
+//  ---------------------
+//   * Change only what sits between the quotes:  "like this"
+//   * Keep the quotes, keep the commas between entries, keep the file name.
+//   * Save it as UTF-8 (Notepad's default). Do not rename or move the file.
+//   * Lines starting with // are notes and are ignored, so you can leave your
+//     own notes here too. Blank lines and trailing commas are fine as well.
+//
+//  If something is wrong with this file
+//  ------------------------------------
+//   * Nothing breaks. The site shows its built-in text for anything it cannot
+//     read, and a small panel appears at the bottom left telling you which line
+//     to look at.
+//   * An empty value ("") or a missing comma is the usual cause.
+//
+//  What this file does NOT change
+//  ------------------------------
+//   * Photos, logos and page layout. Those arrive with an update from us.
+//   * The wording of the contact form's error messages.
+//
+//  Handy placeholders (leave these in if you want them)
+//  ---------------------------------------------------
+//   * {{platformCount}} - how many platforms the site lists
+//   * {{name}}         - the name of the platform a link belongs to
+//   * {{firstName}}    - the first name of whoever filled in the form
+//   * {{phone}}        - the phone number set further down this file
+//
+// ============================================================================
+

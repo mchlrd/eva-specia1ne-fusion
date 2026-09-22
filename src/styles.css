@@ -2,7 +2,8 @@
 @source "../src";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* Tailwind's `dark:` variant follows the same switch the theme tokens do. */
+@custom-variant dark (&:is([data-theme="dark"] *));
 
 /*
  * EvaroTech design system — editorial technical practice.
@@ -49,6 +50,7 @@
 }
 
 :root {
+  color-scheme: light;
   --radius: 0.25rem;
 
   --paper: oklch(0.985 0.002 230);
@@ -58,6 +60,14 @@
   --ember-foreground: oklch(0.19 0.02 60);
   --signal-foreground: oklch(0.98 0.005 85);
   --hairline: oklch(0.19 0.014 235 / 16%);
+  /* Scrims and shadows. In light they are the page's own ink; in dark they stay
+     genuinely dark, because a near-white scrim fogs the page behind a dialog and
+     a near-white shadow is a halo. */
+  --scrim: var(--ink);
+  /* Vendor artwork is drawn for light backgrounds (HPE's black-and-green mark,
+     Meraki's green wordmark), so the plate those logos sit on stays light in
+     both themes. It is the one surface that does not follow the theme. */
+  --logo-plate: oklch(0.965 0.003 235);
   --wipe-aqua: oklch(0.72 0.125 202);
   --wipe-green: var(--wipe-aqua);
 
@@ -83,22 +93,53 @@
   --ring: var(--signal);
 }
 
-.dark {
-  --paper: oklch(0.17 0.008 60);
-  --ink: oklch(0.96 0.006 85);
-  --hairline: oklch(0.96 0.006 85 / 16%);
+/*
+ * Dark theme — the same editorial system with the paper swapped out.
+ *
+ * Deep ink-blue ground (the logo's own hue), near-white ink, and the brand's
+ * signal and ember raised a step so they still carry on a dark surface. Keyed
+ * on `data-theme` on <html>, which the inline script in the document head sets
+ * before the first frame: the correct theme is what paints, never a flash of
+ * the other one.
+ *
+ * `color-scheme` hands the browser's own chrome — scrollbars, form controls,
+ * autofill — the matching hint, so those don't stay white. The logo plate is
+ * deliberately not overridden here; see `--logo-plate` above.
+ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: oklch(0.168 0.012 235);
+  --ink: oklch(0.955 0.005 235);
+  --signal: oklch(0.735 0.118 204);
+  --ember: oklch(0.782 0.158 62);
+  --ember-foreground: oklch(0.18 0.02 60);
+  --signal-foreground: oklch(0.17 0.014 235);
+  --hairline: oklch(0.955 0.005 235 / 15%);
+  --scrim: oklch(0.09 0.012 235);
+
   --background: var(--paper);
   --foreground: var(--ink);
-  --card: oklch(0.22 0.008 60);
+  --card: oklch(0.208 0.014 235);
   --card-foreground: var(--ink);
-  --muted: oklch(0.26 0.008 60);
-  --muted-foreground: oklch(0.72 0.01 80);
-  --primary: var(--ink);
-  --primary-foreground: oklch(0.17 0.008 60);
-  --secondary: oklch(0.26 0.008 60);
+  --popover: oklch(0.208 0.014 235);
+  --popover-foreground: var(--ink);
+  /* The near-black bands (client feedback, "what you can expect", the package
+     overlay) become raised panels here: on dark paper a lighter surface carries
+     the emphasis that a darker one carries in light. */
+  --primary: oklch(0.238 0.018 235);
+  --primary-foreground: oklch(0.96 0.005 235);
+  --secondary: oklch(0.228 0.014 235);
   --secondary-foreground: var(--ink);
+  --muted: oklch(0.228 0.014 235);
+  --muted-foreground: oklch(0.742 0.008 235);
+  --accent: var(--signal);
+  --accent-foreground: var(--signal-foreground);
+  --destructive: oklch(0.64 0.19 27);
+  --destructive-foreground: oklch(0.17 0.008 235);
   --border: var(--hairline);
   --input: var(--hairline);
+  --ring: var(--signal);
 }
 
 @layer base {
@@ -376,7 +417,7 @@
     border-color 0.3s ease;
   &:hover {
     transform: translateY(-6px);
-    box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--ink) 55%, transparent);
+    box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--scrim) 55%, transparent);
   }
   &::after {
     content: "";
@@ -413,6 +454,40 @@
     opacity: 1;
     transform: translate(0, 0);
   }
+}
+
+/* The platforms are grouped by the job they do, so each group is its own shelf:
+   a numbered heading, a one-line purpose, then that group's cards. */
+.platform-groups {
+  display: grid;
+  gap: clamp(2.25rem, 4vw, 3.25rem);
+}
+
+.platform-group__head {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.platform-group__name {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.platform-group__blurb {
+  max-width: 52ch;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .partner-grid {
@@ -509,13 +584,15 @@
   line-height: 1;
 }
 
+/* Sits on the card's footer line rather than its title, so a long vendor name
+   never collides with it. */
 .partner-card__mark {
   position: absolute;
   right: 1.25rem;
-  top: 1.15rem;
+  bottom: 1.15rem;
   color: var(--signal);
   opacity: 0;
-  transform: translate(-0.35rem, 0.35rem);
+  transform: translate(0.4rem, 0);
   transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -525,7 +602,7 @@
 }
 
 @media (width < 48rem) {
-  /* Nine cards at two columns would leave a stray empty cell — let the
+  /* A three-card group at two columns would leave a stray empty cell — let the
      last card span the full row instead. */
   .partner-grid > li:last-child:nth-child(odd) {
     grid-column: 1 / -1;
@@ -533,12 +610,22 @@
 }
 
 @media (width >= 48rem) {
-  .partner-grid {
+  /* Each group holds two or three platforms, so each grid matches its own count:
+     a two-card group fills its row instead of leaving a hairline-coloured hole. */
+  .partner-grid[data-columns="2"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .partner-grid[data-columns="3"] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .partner-card {
     min-height: 11rem;
     padding: 1.5rem;
+  }
+  .platform-group__head {
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0 2.5rem;
   }
 }
 
@@ -560,7 +647,7 @@
   display: grid;
   place-items: center;
   padding: 1.25rem;
-  background: color-mix(in oklab, var(--ink) 72%, transparent);
+  background: color-mix(in oklab, var(--scrim) 72%, transparent);
   overflow-y: auto;
   animation: partner-modal-in 0.3s ease both;
 }
@@ -573,7 +660,7 @@
   padding: clamp(1.5rem, 5vw, 3.5rem);
   background: var(--paper);
   color: var(--ink);
-  box-shadow: 0 2rem 5rem -2rem color-mix(in oklab, var(--ink) 55%, transparent);
+  box-shadow: 0 2rem 5rem -2rem color-mix(in oklab, var(--scrim) 55%, transparent);
   animation: partner-panel-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -601,7 +688,8 @@
   margin-top: 2rem;
   place-items: center;
   padding: 1.5rem;
-  background: var(--secondary);
+  /* Light in both themes: the artwork needs a light plate. */
+  background: var(--logo-plate);
 }
 
 .partner-modal__logo img {
@@ -814,7 +902,7 @@
   display: grid;
   place-items: center;
   padding: 0.75rem;
-  background: color-mix(in oklab, var(--ink) 68%, transparent);
+  background: color-mix(in oklab, var(--scrim) 68%, transparent);
   backdrop-filter: blur(5px);
   animation: pkg-overlay-in 0.3s ease both;
 }
@@ -837,7 +925,7 @@
   background: var(--background);
   color: var(--foreground);
   box-shadow:
-    0 1.5rem 5rem -1.5rem color-mix(in oklab, var(--ink) 70%, transparent),
+    0 1.5rem 5rem -1.5rem color-mix(in oklab, var(--scrim) 70%, transparent),
     0 0 0 1px var(--hairline);
   animation: pkg-panel-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -915,5 +1003,115 @@
   .pkg-modal,
   .pkg-panel {
     animation: none;
+  }
+}
+
+/* --- Theme control ------------------------------------------------------- */
+
+/*
+ * Two shapes of one state: a three-way switch (follow the device / light / dark)
+ * where the header has room for it, and a compact flip in the narrow bar.
+ *
+ * Neither rule sets `display` — the header decides that with its own responsive
+ * classes — because these rules are unlayered and would otherwise beat Tailwind's
+ * `hidden`/`inline-flex` utilities.
+ */
+
+.theme-switch {
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+}
+
+.theme-switch__option {
+  display: grid;
+  width: 1.9rem;
+  height: 1.9rem;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  transition:
+    color 0.25s ease,
+    background-color 0.3s ease;
+}
+
+.theme-switch__option:hover {
+  color: var(--foreground);
+}
+
+.theme-switch__option[aria-pressed="true"] {
+  background: color-mix(in oklab, var(--signal) 16%, transparent);
+  color: var(--signal);
+}
+
+.theme-switch__option svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.theme-flip {
+  position: relative;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.125rem;
+  width: 2.7rem;
+  height: 1.5rem;
+  padding: 2px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  color: var(--muted-foreground);
+}
+
+/* The thumb slides to the opposite end, so the idle icon swaps sides with it. */
+.theme-flip[data-theme="dark"] {
+  justify-content: flex-start;
+}
+
+.theme-flip__ghost {
+  display: grid;
+  width: 1.1rem;
+  place-items: center;
+  opacity: 0.5;
+}
+
+.theme-flip__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  display: grid;
+  width: 1.1rem;
+  height: 1.1rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--background);
+  transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.theme-flip[data-theme="dark"] .theme-flip__thumb {
+  transform: translateX(1.225rem);
+}
+
+.theme-flip__ghost svg,
+.theme-flip__thumb svg {
+  width: 0.72rem;
+  height: 0.72rem;
+}
+
+.theme-flip:hover {
+  color: var(--foreground);
+}
+
+/* Vendor artwork sits on a light plate whatever the theme (see --logo-plate). */
+.logo-plate {
+  background: var(--logo-plate);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-flip__thumb,
+  .theme-switch__option {
+    transition: none;
   }
 }

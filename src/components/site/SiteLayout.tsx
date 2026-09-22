@@ -5,6 +5,7 @@ import { LetterGlow } from "./LetterGlow";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
 import { PageTransition } from "./PageTransition";
+import { ContentNotice, PageMetaSync } from "./content";
 
 /** Hairline under the fixed header showing reading progress. */
 function ScrollProgress() {
@@ -42,12 +43,14 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
     <div id="top" className="min-h-screen">
+      <PageMetaSync pathname={pathname} />
       <ScrollProgress />
       <SiteHeader />
       <LetterGlow as="main" className="overflow-x-clip">
         <PageTransition key={pathname}>{children}</PageTransition>
       </LetterGlow>
       <SiteFooter />
+      <ContentNotice />
     </div>
   );
 }

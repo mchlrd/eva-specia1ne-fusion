@@ -10,8 +10,9 @@
 //     approach/index.html  contact/index.html      <- one file per route
 //     assets/  favicon.png  robots.txt 404.html    <- copied from the build
 //     contact.ashx  web.config                     <- the form's handler
+//     content.json                                 <- the editable text, + notes
 import { spawn } from "node:child_process";
-import { access, cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { access, cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import path from "node:path";
 import process from "node:process";
@@ -21,6 +22,8 @@ const serverEntry = path.join(root, ".output", "server", "index.mjs");
 const publicDir = path.join(root, ".output", "public");
 const outDir = path.join(root, "static-export");
 const handlerDir = path.join(root, "deploy", "iis-static");
+const contentSource = path.join(root, "src", "content", "site-content.json");
+const contentNotes = path.join(root, "deploy", "content-notes.txt");
 
 /** Every page that must exist on the static host. A missing one is a 404 live. */
 const ROUTES = [
@@ -109,13 +112,28 @@ async function main() {
     // 3. The contact form's server-side handler, so one folder is the whole deploy.
     await cp(handlerDir, outDir, { recursive: true });
 
+    // 3b. The editable text: the same values the build just rendered, plus a
+    // header written for whoever opens the file on the server. This is the file
+    // that makes wording changeable without a rebuild — see the content runtime.
+    const json = await readFile(contentSource, "utf8");
+    try {
+      JSON.parse(json);
+    } catch (error) {
+      throw new Error(
+        `src/content/site-content.json is not valid JSON: ${error instanceof Error ? error.message : error}`,
+      );
+    }
+    const notes = await readFile(contentNotes, "utf8");
+    await writeFile(path.join(outDir, "content.json"), `${notes.trimEnd()}\n${json}`);
+
     // 4. Fail loudly if a route is missing, rather than shipping a silent 404.
+    const required = [...ROUTES.map((route) => route.file), "content.json"];
     const missing = [];
-    for (const route of ROUTES) {
+    for (const file of required) {
       try {
-        await access(path.join(outDir, route.file));
+        await access(path.join(outDir, file));
       } catch {
-        missing.push(route.file);
+        missing.push(file);
       }
     }
     if (missing.length > 0) throw new Error(`Export is incomplete, missing: ${missing.join(", ")}`);

@@ -3,46 +3,53 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHeader, SiteLayout } from "@/components/site/SiteLayout";
 import { ManagedPackages } from "@/components/site/ManagedPackages";
 import { Reveal } from "@/components/site/Reveal";
+import { defaults } from "@/components/site/content-store";
+import { useContent } from "@/components/site/content";
 import managedOffice from "@/assets/managed-office.jpg";
 import managedMonitoring from "@/assets/managed-monitoring.jpg";
 
-const title = "Managed IT Packages — Security, Backup & Microsoft 365 | EvaroTech";
-const description =
-  "Managed security, managed backup and Microsoft 365 mail and apps — monitored, patched and verified so your business keeps running.";
-
 type ManagedSearch = { pkg?: number };
 
-/** Accept ?pkg=N so the home page teasers can deep-link to a package. */
+/**
+ * Accept ?pkg=N so the home page teasers can deep-link to a package. The upper
+ * bound is deliberately loose: how many packages exist is editable text, so a
+ * value past the end is ignored by the packages list rather than rejected here.
+ */
 const validateSearch = (search: Record<string, unknown>): ManagedSearch => {
   const n = Number(search["pkg"]);
-  return Number.isInteger(n) && n >= 1 && n <= 3 ? { pkg: n } : {};
+  return Number.isInteger(n) && n >= 1 && n <= 99 ? { pkg: n } : {};
 };
 
 export const Route = createFileRoute("/managed")({
   validateSearch,
-  head: () => ({
-    meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => {
+    const { title, description } = defaults.pages.managed;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+    };
+  },
   component: ManagedPage,
 });
 
 function ManagedPage() {
   const { pkg } = Route.useSearch();
+  const { managed, company } = useContent();
+  const { header, why, expect, packages } = managed;
 
   return (
     <SiteLayout>
       <PageHeader
-        index="03"
-        section="Managed Services"
-        title="Managed packages that cover the whole business."
-        intro="Ongoing services that keep systems patched, monitored and backed up long after install day."
+        index={header.index}
+        section={header.section}
+        title={header.heading}
+        intro={header.intro}
       />
 
       {/* Why managed */}
@@ -52,25 +59,14 @@ function ManagedPage() {
             <p className="label-mono flex items-center gap-3">
               <span className="text-signal">01</span>
               <span aria-hidden="true">/</span>
-              <span>Managed</span>
-              <span aria-hidden="true">/</span>
-              <span>Why go managed</span>
+              <span>{why.eyebrow}</span>
             </p>
-            <h2 className="display-md mt-6 max-w-[20ch]">
-              Your IT, handled — so the business keeps moving.
-            </h2>
+            <h2 className="display-md mt-6 max-w-[20ch]">{why.heading}</h2>
             <p className="mt-6 max-w-[52ch] text-base leading-relaxed text-muted-foreground md:text-lg">
-              A managed package turns technology from something you worry about into something that
-              just works. We watch, patch and verify your systems on a schedule, and you always have
-              a direct line to the person who knows your setup.
+              {why.body}
             </p>
             <ul className="mt-8 space-y-3">
-              {[
-                "One flat monthly rate — no surprise invoices",
-                "Problems fixed before they interrupt work",
-                "Backups verified so a restore is never a guess",
-                "Direct access to a technician who knows your setup",
-              ].map((point) => (
+              {why.points.map((point) => (
                 <li
                   key={point}
                   className="grid grid-cols-[auto_1fr] gap-x-3 text-sm leading-snug text-muted-foreground md:text-base"
@@ -87,13 +83,13 @@ function ManagedPage() {
           <Reveal variant="scale" delay={120} className="hover-zoom md:col-span-6">
             <img
               src={managedOffice}
-              alt="IT technician working at a desk with monitors and a laptop"
+              alt={`IT technician working at a desk with monitors and a laptop at ${company.short}`}
               width={1600}
               height={1067}
               loading="lazy"
               className="w-full object-cover"
             />
-            <p className="label-mono mt-4">Fig. 01 — Your IT, watched and kept healthy</p>
+            <p className="label-mono mt-4">{why.caption}</p>
           </Reveal>
         </div>
       </section>
@@ -110,9 +106,7 @@ function ManagedPage() {
               loading="lazy"
               className="w-full object-cover"
             />
-            <p className="label-mono mt-4 text-primary-foreground/60">
-              Fig. 02 — Monitored around the clock, from one screen
-            </p>
+            <p className="label-mono mt-4 text-primary-foreground/60">{expect.caption}</p>
           </Reveal>
 
           <div className="md:col-span-7">
@@ -120,30 +114,15 @@ function ManagedPage() {
               <p className="label-mono flex items-center gap-3">
                 <span className="text-ember">02</span>
                 <span aria-hidden="true">/</span>
-                <span>Managed</span>
-                <span aria-hidden="true">/</span>
-                <span>What you can expect</span>
+                <span>{expect.eyebrow}</span>
               </p>
-              <h2 className="display-md mt-6 max-w-[18ch]">The same care, every month.</h2>
+              <h2 className="display-md mt-6 max-w-[18ch]">{expect.heading}</h2>
             </Reveal>
 
             <div className="mt-10 border-t border-primary-foreground/15">
-              {[
-                {
-                  title: "Monitored",
-                  body: "We watch your servers, workstations and backups around the clock — and we hear about problems before you do.",
-                },
-                {
-                  title: "Maintained",
-                  body: "Patches and updates are applied on a schedule that suits your business. No forced reboots mid-morning.",
-                },
-                {
-                  title: "Supported",
-                  body: "One call or email reaches Tim directly — worked remotely first, and on site when it needs to be.",
-                },
-              ].map((item, i) => (
+              {expect.items.map((item, i) => (
                 <Reveal
-                  key={item.title}
+                  key={item.id}
                   as="div"
                   variant="right"
                   delay={i * 90}
@@ -171,9 +150,7 @@ function ManagedPage() {
           <p className="label-mono mb-10 flex items-center gap-3">
             <span className="text-signal">03</span>
             <span aria-hidden="true">/</span>
-            <span>Packages</span>
-            <span aria-hidden="true">/</span>
-            <span>Select one to open its details</span>
+            <span>{packages.eyebrow}</span>
           </p>
 
           <ManagedPackages autoOpen={pkg ? pkg - 1 : undefined} />
@@ -183,7 +160,7 @@ function ManagedPage() {
               to="/contact"
               className="bracket hover-glow inline-block font-display text-2xl font-bold tracking-tight md:text-3xl"
             >
-              Ask which package fits
+              {packages.cta}
             </Link>
           </Reveal>
         </div>

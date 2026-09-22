@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { z } from "zod";
 
-import { company } from "./data";
+import { firstName, tokens } from "./content-store";
+import { useContent } from "./content";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Please add your name").max(100, "Name is too long"),
@@ -16,11 +17,15 @@ const schema = z.object({
 
 type Field = "name" | "email" | "company" | "message";
 
-const fields: { key: Field; label: string; type: "input" | "textarea"; optional?: boolean }[] = [
-  { key: "name", label: "Name", type: "input" },
-  { key: "email", label: "Email", type: "input" },
-  { key: "company", label: "Business", type: "input", optional: true },
-  { key: "message", label: "What do you need?", type: "textarea" },
+/**
+ * The fields are structure, so they stay here; their labels and placeholders are
+ * copy, so they come from the content file.
+ */
+const fields: { key: Field; type: "input" | "textarea"; optional?: boolean }[] = [
+  { key: "name", type: "input" },
+  { key: "email", type: "input" },
+  { key: "company", type: "input", optional: true },
+  { key: "message", type: "textarea" },
 ];
 
 /**
@@ -81,6 +86,8 @@ async function deliverEnquiry(payload: Enquiry, honeypot: string): Promise<void>
 type Status = "idle" | "sending" | "sent" | "error";
 
 export function ContactForm() {
+  const { company, contact } = useContent();
+  const copy = contact.form;
   const [values, setValues] = useState<Record<Field, string>>({
     name: "",
     email: "",
@@ -127,11 +134,12 @@ export function ContactForm() {
   if (status === "sent") {
     return (
       <div className="border-t-2 border-signal pt-8">
-        <p className="display-md text-signal">Message sent.</p>
+        <p className="display-md text-signal">{copy.sentHeading}</p>
         <p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
-          Thanks{values.name ? `, ${values.name.split(" ")[0]}` : ""} — your enquiry is on its way
-          to the EvaroTech team. We usually get back to you within one business day. For anything
-          urgent, call {company.phone}.
+          {tokens(copy.sentBody, {
+            firstName: values.name ? `, ${firstName(values.name)}` : "",
+            phone: company.phone,
+          })}
         </p>
       </div>
     );
@@ -143,8 +151,8 @@ export function ContactForm() {
         {fields.map((f) => (
           <label key={f.key} className="block border-b border-border py-5">
             <span className="label-mono flex items-center justify-between gap-4">
-              <span>{f.label}</span>
-              {f.optional && <span className="text-ember">Optional</span>}
+              <span>{copy.labels[f.key]}</span>
+              {f.optional && <span className="text-ember">{copy.optional}</span>}
             </span>
             {f.type === "textarea" ? (
               <textarea
@@ -153,7 +161,7 @@ export function ContactForm() {
                 rows={5}
                 maxLength={1000}
                 className="mt-3 w-full resize-none bg-transparent text-base outline-none placeholder:text-muted-foreground/60"
-                placeholder="Networks, servers, backups, wireless…"
+                placeholder={copy.placeholders.message}
               />
             ) : (
               <input
@@ -162,7 +170,7 @@ export function ContactForm() {
                 type={f.key === "email" ? "email" : "text"}
                 maxLength={255}
                 className="mt-3 w-full bg-transparent text-base outline-none placeholder:text-muted-foreground/60"
-                placeholder={f.key === "email" ? "you@business.ca" : ""}
+                placeholder={f.key === "email" ? copy.placeholders.email : ""}
               />
             )}
             {errors[f.key] && (
@@ -191,7 +199,7 @@ export function ContactForm() {
         disabled={status === "sending"}
         className="bracket hover-glow mt-10 font-display text-2xl font-bold tracking-tight disabled:opacity-50 md:text-3xl"
       >
-        {status === "sending" ? "Sending…" : "Send enquiry"}
+        {status === "sending" ? copy.sending : copy.submit}
       </button>
     </form>
   );

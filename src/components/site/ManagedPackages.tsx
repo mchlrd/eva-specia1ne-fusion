@@ -1,23 +1,27 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 
-import { managed } from "./data";
+import { softwareLogos } from "./data";
+import { tokens } from "./content-store";
+import { useContent } from "./content";
 import { LetterGlow } from "./LetterGlow";
 import { Overlay } from "./Overlay";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export function ManagedPackages({ autoOpen }: { autoOpen?: number | undefined }) {
+  const { packages: section, detail } = useContent().managed;
+  const items = section.items;
   const [selected, setSelected] = useState<number | null>(() =>
-    autoOpen !== undefined && managed[autoOpen] ? autoOpen : null,
+    autoOpen !== undefined && items[autoOpen] ? autoOpen : null,
   );
-  const pkg = selected === null ? null : managed[selected];
+  const pkg = selected === null ? null : items[selected];
 
   return (
     <>
       <ol className="border-t border-border">
-        {managed.map((m, i) => (
-          <li key={m.title} className="group border-b border-border">
+        {items.map((m, i) => (
+          <li key={m.id} className="group border-b border-border">
             <button
               type="button"
               onClick={() => setSelected(i)}
@@ -49,9 +53,11 @@ export function ManagedPackages({ autoOpen }: { autoOpen?: number | undefined })
           closeLabel="Close package details"
           bar={
             <p className="label-mono flex items-center gap-3">
-              <span className="text-ember">Managed Services</span>
+              <span className="text-ember">{detail.bar}</span>
               <span aria-hidden="true">/</span>
-              <span>Package {pad(selected + 1)}</span>
+              <span>
+                {detail.barPackage} {pad(selected + 1)}
+              </span>
             </p>
           }
         >
@@ -76,9 +82,11 @@ export function ManagedPackages({ autoOpen }: { autoOpen?: number | undefined })
               <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
                 <div>
                   <p className="label-mono flex items-center gap-3 border-t border-border pt-5">
-                    <span className="text-signal">Included</span>
+                    <span className="text-signal">{detail.included}</span>
                     <span aria-hidden="true">/</span>
-                    <span>{pkg.points.length} areas</span>
+                    <span>
+                      {pkg.points.length} {detail.areas}
+                    </span>
                   </p>
                   <ul className="mt-5 space-y-3">
                     {pkg.points.map((point) => (
@@ -97,21 +105,29 @@ export function ManagedPackages({ autoOpen }: { autoOpen?: number | undefined })
 
                 <div>
                   <p className="label-mono flex items-center gap-3 border-t border-border pt-5">
-                    <span className="text-signal">Powered by</span>
+                    <span className="text-signal">{detail.poweredBy}</span>
                     <span aria-hidden="true">/</span>
                     <span>{pkg.software.map((s) => s.name).join(" · ")}</span>
                   </p>
-                  <div className="mt-5 flex min-h-44 items-center justify-center gap-8 rounded-md border border-border bg-secondary px-6 py-10">
-                    {pkg.software.map((s) => (
-                      <img
-                        key={s.name}
-                        src={s.logo}
-                        alt={`${s.name} logo`}
-                        loading="lazy"
-                        decoding="async"
-                        className="max-h-20 w-auto max-w-[45%] object-contain md:max-h-24"
-                      />
-                    ))}
+                  {/* Light plate in both themes — the logos are drawn for one. */}
+                  <div className="logo-plate mt-5 flex min-h-44 items-center justify-center gap-8 rounded-md border border-border px-6 py-10">
+                    {pkg.software.map((s) => {
+                      const logo = softwareLogos[s.id];
+                      return logo ? (
+                        <img
+                          key={s.name}
+                          src={logo}
+                          alt={`${s.name} logo`}
+                          loading="lazy"
+                          decoding="async"
+                          className="max-h-20 w-auto max-w-[45%] object-contain md:max-h-24"
+                        />
+                      ) : (
+                        <span key={s.name} className="label-mono text-muted-foreground">
+                          {s.name}
+                        </span>
+                      );
+                    })}
                   </div>
                   <div className="mt-4 flex flex-wrap gap-x-7 gap-y-2">
                     {pkg.software.map((s) => (
@@ -122,7 +138,7 @@ export function ManagedPackages({ autoOpen }: { autoOpen?: number | undefined })
                         rel="noopener noreferrer"
                         className="link-underline label-mono"
                       >
-                        See {s.name} ↗
+                        {tokens(detail.see, { name: s.name })} ↗
                       </a>
                     ))}
                   </div>
@@ -134,15 +150,12 @@ export function ManagedPackages({ autoOpen }: { autoOpen?: number | undefined })
               className="rise mt-12 flex flex-wrap items-end justify-between gap-6 border-t border-border pt-8 md:mt-16"
               style={{ animationDelay: "0.32s" }}
             >
-              <p className="label-mono max-w-md">
-                Every package is set up, monitored and supported by EvaroTech — no product
-                juggling on your side.
-              </p>
+              <p className="label-mono max-w-md">{detail.note}</p>
               <Link
                 to="/contact"
                 className="bracket hover-glow font-display text-2xl font-bold tracking-tight md:text-3xl"
               >
-                Ask about this package
+                {detail.cta}
               </Link>
             </div>
           </LetterGlow>

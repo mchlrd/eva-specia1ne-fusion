@@ -11,6 +11,8 @@ import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { RouteTransitionOverlay } from "../components/site/PageTransition";
+import { ContentProvider } from "../components/site/content";
+import { THEME_BAR_COLOR, THEME_BOOTSTRAP } from "../components/site/theme-store";
 
 function NotFoundComponent() {
   return (
@@ -89,6 +91,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      // Matches --paper; the theme script rewrites it the moment the theme is known.
+      { name: "theme-color", content: THEME_BAR_COLOR.light },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -113,6 +117,13 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        {/*
+          Before anything paints: put the saved theme (or the device's) on <html>.
+          Inline and first in the head on purpose — a separate request would render
+          the light theme first and then flip, which is exactly the flicker this
+          avoids. See theme-store.ts.
+        */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
         <HeadContent />
       </head>
       <body>
@@ -128,9 +139,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      <RouteTransitionOverlay />
+      {/*
+        The content provider has to sit ABOVE the routes: a page reads its own
+        copy from this context, and a provider inside a page's layout would leave
+        the page itself reading the untouchable built-in values.
+      */}
+      <ContentProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+        <RouteTransitionOverlay />
+      </ContentProvider>
     </QueryClientProvider>
   );
 }

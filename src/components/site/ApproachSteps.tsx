@@ -1,9 +1,12 @@
-import { principles } from "./data";
+import { stepMedia } from "./data";
+import { useContent } from "./content";
 import { Reveal } from "./Reveal";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export function ApproachSteps() {
+  const steps = useContent().approach.steps;
+
   return (
     <div className="relative">
       {/* Centre timeline rail (desktop) */}
@@ -13,11 +16,12 @@ export function ApproachSteps() {
       />
 
       <ol>
-        {principles.map((p, i) => {
+        {steps.map((p, i) => {
           const reversed = i % 2 === 1;
+          const media = stepMedia[p.id];
           return (
             <li
-              key={p.title}
+              key={p.id}
               className="relative overflow-hidden border-t border-border py-16 md:py-24"
             >
               {/* Node on the rail */}
@@ -37,16 +41,14 @@ export function ApproachSteps() {
               <div className="shell relative grid items-center gap-x-8 gap-y-10 md:grid-cols-12">
                 <Reveal
                   variant={reversed ? "right" : "left"}
-                  className={
-                    reversed
-                      ? "md:col-span-6 md:col-start-7"
-                      : "md:col-span-6"
-                  }
+                  className={reversed ? "md:col-span-6 md:col-start-7" : "md:col-span-6"}
                 >
                   <p className="label-mono flex items-center gap-3">
                     <span className="text-ember">Step {pad(i + 1)}</span>
                     <span aria-hidden="true">/</span>
-                    <span>{pad(i + 1)} of {pad(principles.length)}</span>
+                    <span>
+                      {pad(i + 1)} of {pad(steps.length)}
+                    </span>
                   </p>
                   <h2 className="display-lg mt-5 max-w-[14ch]">{p.title}</h2>
                   <p className="mt-6 max-w-[46ch] text-base leading-relaxed text-muted-foreground md:text-lg">
@@ -77,13 +79,15 @@ export function ApproachSteps() {
                   }
                 >
                   <figure className="hover-zoom overflow-hidden rounded-md border border-border">
-                    <img
-                      src={p.image}
-                      alt={p.alt}
-                      loading="lazy"
-                      decoding="async"
-                      className="aspect-[3/2] w-full object-cover"
-                    />
+                    {media && (
+                      <img
+                        src={media.image}
+                        alt={media.alt}
+                        loading="lazy"
+                        decoding="async"
+                        className="aspect-[3/2] w-full object-cover"
+                      />
+                    )}
                     <figcaption className="label-mono flex items-baseline gap-2.5 border-t border-border bg-secondary px-4 py-3">
                       <span className="text-ember">Fig. {pad(i + 1)}</span>
                       <span aria-hidden="true">/</span>

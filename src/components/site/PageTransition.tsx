@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter, useRouterState } from "@tanstack/react-router";
 
 import { nav } from "./data";
+import { useContent } from "./content";
 
 const CURTAIN_FLAG = "__evarotechCurtain";
 const REVEAL_EVENT = "evarotech:page-revealed";
@@ -46,7 +47,10 @@ export function PageTransition({ children }: { children: ReactNode }) {
   }, [curtained, pathname]);
 
   return (
-    <div data-page-enter={curtained ? "true" : "initial"} data-page-revealed={revealed ? "true" : "false"}>
+    <div
+      data-page-enter={curtained ? "true" : "initial"}
+      data-page-revealed={revealed ? "true" : "false"}
+    >
       {children}
     </div>
   );
@@ -62,6 +66,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
 export function RouteTransitionOverlay() {
   const router = useRouter();
   const currentPath = useRouterState({ select: (s) => s.location.pathname });
+  const { nav: labels } = useContent();
   const curtainRef = useRef<HTMLDivElement>(null);
   const [transition, setTransition] = useState<Transition | null>(null);
   const idRef = useRef(0);
@@ -70,7 +75,9 @@ export function RouteTransitionOverlay() {
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const nextPaint = () =>
-      new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      );
 
     const setCurtainFlag = (value: boolean) => {
       (window as unknown as Record<string, boolean>)[CURTAIN_FLAG] = value;
@@ -90,9 +97,12 @@ export function RouteTransitionOverlay() {
         // Deep links can carry a query string (?pkg=1); the curtain label
         // should name the destination page, not the raw URL.
         const pagePath = (to.split("?")[0] || "/").replace(/\/$/, "") || "/";
-        const label =
-          nav.find((item) => item.to === pagePath)?.label ??
-          (pagePath === "/" ? "Home" : pagePath.slice(1).replace(/-/g, " "));
+        const destination = nav.find((item) => item.to === pagePath);
+        const label = destination
+          ? labels[destination.key]
+          : pagePath === "/"
+            ? labels.home
+            : pagePath.slice(1).replace(/-/g, " ");
         // Render the curtain (positioned off-screen below), then animate it up
         // over the OLD page, which is still mounted and visible.
         setTransition({ id, label, phase: "cover" });
@@ -137,7 +147,9 @@ export function RouteTransitionOverlay() {
     const onClick = (event: MouseEvent) => {
       if (event.defaultPrevented || event.button !== 0) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      const anchor = (event.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+      const anchor = (event.target as Element | null)?.closest?.(
+        "a[href]",
+      ) as HTMLAnchorElement | null;
       if (!anchor) return;
       const href = anchor.getAttribute("href");
       if (!href || !href.startsWith("/")) return;
@@ -150,11 +162,16 @@ export function RouteTransitionOverlay() {
 
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
-  }, [router, currentPath]);
+  }, [router, currentPath, labels]);
 
   if (!transition) return null;
   return (
-    <div ref={curtainRef} className="route-curtain" data-phase={transition.phase} aria-hidden="true">
+    <div
+      ref={curtainRef}
+      className="route-curtain"
+      data-phase={transition.phase}
+      aria-hidden="true"
+    >
       <div className="route-curtain__inner">
         <span className="label-mono text-ember">EvaroTech / 01</span>
         <span className="route-curtain__label">{transition.label}</span>

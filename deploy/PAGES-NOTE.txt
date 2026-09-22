@@ -1,0 +1,88 @@
+EvaroTech website - page update
+===============================
+
+  UPDATE-NOTE.txt   this file. Read it, do NOT copy it to the server.
+  site/             the updated pages. Copy its CONTENTS over the existing
+                    files in the folder your evarotech.ca site uses
+                    (typically C:\inetpub\wwwroot).
+
+
+What is new in this update
+--------------------------
+
+  The header now carries a theme switch: follow the device, or pin light or
+dark by hand. It sits on the right of the header on wide screens, and at the
+foot of the menu on a phone. A visitor's choice is remembered in their own
+browser, and a first-time visitor gets whichever theme their own computer or
+phone is set to - so the site may open dark on a machine running dark mode.
+There is nothing to configure for it on the server: it is part of the page.
+
+
+What is in here
+---------------
+
+  index.html, services\, managed\, approach\, contact\   the five pages
+  assets\                                                the build (scripts,
+                                                         styles, photos, logos)
+  content.json                                           the site's text
+  favicon.png, robots.txt, 404.html                      unchanged extras
+
+
+What is NOT in here, on purpose
+-------------------------------
+
+  contact.ashx   the contact form's handler - the copy on your server works and
+                 was hand-corrected there. Copying it from an older package is
+                 what broke the form last time. Leave it alone.
+  web.config     your site configuration. Leave it alone.
+
+
+How to apply it
+---------------
+
+Copy everything INSIDE site\ into the site folder, overwriting the existing
+files. Copy them together in one pass: every page points at the same two
+hashed bundle files in assets\, so a page copied on its own will be unstyled.
+
+One exception to watch, if you have ever edited the wording on the server:
+see whether you have a content.json there with changes you made (the site's
+text: phone numbers, headlines, testimonials). If you do, keep it - rename it
+out of the way before copying, then put it back after, or open it alongside
+this package's copy and carry your values across. Overwriting it replaces your
+wording with the wording this package was built from. If you have never
+edited it, copy it with everything else.
+
+Nothing needs restarting, and no cache needs clearing: the new scripts and
+styles have new names, so browsers fetch them without being asked to. Only
+/assets is cached long-term, and HTML is always re-checked.
+
+Then, on the server or from your own machine:
+
+  * hard-refresh https://evarotech.ca/ in the browser (Ctrl+F5)
+  * walk the five pages: /, /services, /managed, /approach, /contact
+  * use the theme switch on the right of the header - the page should change
+    between light and dark, and stay that way after a refresh
+  * https://evarotech.ca/contact.ashx should answer {"error":"POST only."}
+
+
+Editing the text later
+----------------------
+
+content.json is the file to edit for wording changes. It sits in the site
+folder next to index.html, and it explains itself at the top. Change what is
+between the quotes, save as UTF-8, refresh the page. No rebuild, no restart.
+
+If the file has a mistake in it, the site keeps working and shows a small
+panel at the bottom left telling you which line to look at.
+
+One thing to know: editing index.html by hand cannot change the site's text.
+The pages are built by the scripts in assets\, which redraw the page as soon as
+it loads, so a hand edit in the HTML is overwritten a moment later. Wording
+belongs in content.json; anything else comes to us as a rebuild.
+
+
+Rolling back
+------------
+
+Keep the previous copy of this folder (or the previous zip) and copy the files
+back, or point the site's physical path at the older folder.

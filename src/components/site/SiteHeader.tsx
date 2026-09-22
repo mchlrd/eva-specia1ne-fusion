@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
-import { company, nav } from "./data";
+import { nav } from "./data";
+import { phoneHref } from "./content-store";
+import { useContent } from "./content";
+import { ThemeFlip, ThemeSwitch } from "./ThemeToggle";
 import mark from "@/assets/evarotech-mark.png";
 
 export function SiteHeader() {
+  const { company, nav: labels } = useContent();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -25,7 +29,7 @@ export function SiteHeader() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 bg-background/85 backdrop-blur-md transition-shadow duration-500 ${
-        scrolled ? "shadow-[0_1px_0_0_var(--hairline),0_12px_32px_-28px_var(--ink)]" : ""
+        scrolled ? "shadow-[0_1px_0_0_var(--hairline),0_12px_32px_-28px_var(--scrim)]" : ""
       }`}
     >
       <div className="shell flex h-16 items-center justify-between border-b border-border">
@@ -37,14 +41,14 @@ export function SiteHeader() {
         >
           <img
             src={mark}
-            alt="EvaroTech logo"
+            alt={`${company.short} logo`}
             width={44}
             height={36}
             className="h-7 w-auto object-contain"
           />
           <span className="font-display text-base font-bold tracking-tight xl:text-lg">
-            <span className="text-ember">Evaro</span>
-            <span className="text-signal">Tech</span>
+            <span className="text-ember">{company.wordmark.lead}</span>
+            <span className="text-signal">{company.wordmark.accent}</span>
           </span>
         </Link>
 
@@ -56,15 +60,19 @@ export function SiteHeader() {
               activeProps={{ className: "text-signal" }}
               className="label-mono link-underline"
             >
-              {item.label}
+              {labels[item.key]}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-5">
-          <a href={company.phoneHref} className="label-mono hidden link-underline xl:inline">
+        <div className="flex items-center gap-4 xl:gap-5">
+          <a href={phoneHref(company.phone)} className="label-mono hidden link-underline xl:inline">
             {company.phone}
           </a>
+          {/* Where there is room, all three choices; in the narrow bar, a flip,
+              with the full switch at the foot of the menu. */}
+          <ThemeSwitch className="hidden lg:inline-flex" />
+          <ThemeFlip className="inline-flex lg:hidden" />
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -92,14 +100,17 @@ export function SiteHeader() {
                 onClick={() => setOpen(false)}
                 className="flex items-baseline justify-between border-b border-border py-5"
               >
-                <span className="display-md">{item.label}</span>
+                <span className="display-md">{labels[item.key]}</span>
                 <span className="label-mono text-ember">0{i + 1}</span>
               </Link>
             ))}
           </nav>
-          <div className="label-mono space-y-1">
-            <p>{company.phone}</p>
-            <p>{company.email}</p>
+          <div className="space-y-4">
+            <ThemeSwitch className="inline-flex lg:hidden" />
+            <div className="label-mono space-y-1">
+              <p>{company.phone}</p>
+              <p>{company.email}</p>
+            </div>
           </div>
         </div>
       )}

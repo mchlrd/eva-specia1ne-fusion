@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { technologyPartners } from "./data";
+import { hostOf, platformLogos, type GroupItem } from "./data";
+import { useContent } from "./content";
 import { LetterGlow } from "./LetterGlow";
+import { Reveal } from "./Reveal";
 
 const CLOSE_MS = 280;
 
+type Selection = {
+  platform: GroupItem;
+  /** The group the card was opened from, so the modal can say where it sits. */
+  group: string;
+};
+
 export function PartnerGrid() {
-  const [selected, setSelected] = useState<number | null>(null);
+  const { groups, note } = useContent().services.partners;
+  const [selected, setSelected] = useState<Selection | null>(null);
   const [closing, setClosing] = useState(false);
-  const partner = selected === null ? null : technologyPartners[selected];
 
   const close = () => {
     setClosing((isClosing) => {
@@ -33,32 +41,55 @@ export function PartnerGrid() {
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
+
+  const logo = selected ? platformLogos[selected.platform.id] : undefined;
 
   return (
     <>
-      <ul className="partner-grid partner-grid--light" aria-label="Technology partners">
-        {technologyPartners.map((item, i) => (
-          <li key={item.name}>
-            <button
-              type="button"
-              className="partner-card partner-card--light group"
-              onClick={() => setSelected(i)}
-              aria-label={`Learn more about ${item.name}`}
-            >
-              <span className="partner-card__front">
-                <span className="label-mono text-signal">{String(i + 1).padStart(2, "0")}</span>
-                <span className="partner-card__name">{item.name}</span>
-                <span className="partner-card__mark" aria-hidden="true">↗</span>
-              </span>
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div className="platform-groups">
+        {groups.map((group, groupIndex) => (
+          <Reveal
+            key={group.id}
+            variant="up"
+            delay={groupIndex === 0 ? 0 : 60}
+            className="platform-group"
+          >
+            <header className="platform-group__head">
+              <h3 className="platform-group__name">
+                <span className="text-signal">{String(groupIndex + 1).padStart(2, "0")}</span>
+                <span aria-hidden="true">/</span>
+                <span>{group.name}</span>
+              </h3>
+              <p className="platform-group__blurb">{group.blurb}</p>
+            </header>
 
-      {partner &&
-        selected !== null &&
+            <ul
+              className="partner-grid partner-grid--light"
+              data-columns={group.items.length}
+              aria-label={`${group.name} platforms`}
+            >
+              {group.items.map((item) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    className="partner-card partner-card--light group"
+                    onClick={() => setSelected({ platform: item, group: group.name })}
+                    aria-label={`Learn more about ${item.name}`}
+                  >
+                    <span className="partner-card__front">
+                      <span className="partner-card__name">{item.name}</span>
+                      <span className="label-mono">{hostOf(item.website)}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        ))}
+      </div>
+
+      {selected &&
         createPortal(
           <div
             className="partner-modal"
@@ -84,28 +115,26 @@ export function PartnerGrid() {
                 <span aria-hidden="true">×</span>
               </button>
               <LetterGlow>
-                <p className="label-mono text-signal">
-                  Platform / {String(selected + 1).padStart(2, "0")}
-                </p>
-                <div className="partner-modal__logo">
-                  <img src={partner.logo} alt={`${partner.name} logo`} />
-                </div>
+                <p className="label-mono text-signal">{selected.group}</p>
+                {logo && (
+                  <div className="partner-modal__logo">
+                    <img src={logo} alt={`${selected.platform.name} logo`} />
+                  </div>
+                )}
                 <h3 id="partner-modal-title" className="display-lg mt-8">
-                  {partner.name}
+                  {selected.platform.name}
                 </h3>
-                <p className="partner-modal__description">{partner.description}</p>
+                <p className="partner-modal__description">{selected.platform.description}</p>
                 <a
                   className="partner-modal__link"
-                  href={partner.website}
+                  href={selected.platform.website}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Learn more at {new URL(partner.website).hostname.replace("www.", "")}
+                  Learn more at {hostOf(selected.platform.website)}
                   <span aria-hidden="true"> ↗</span>
                 </a>
-                <p className="label-mono mt-10">
-                  Integrated, configured and supported by EvaroTech.
-                </p>
+                <p className="label-mono mt-10">{note}</p>
               </LetterGlow>
             </section>
           </div>,

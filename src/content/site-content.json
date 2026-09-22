@@ -1,0 +1,525 @@
+{
+  "company": {
+    "name": "EvaroTech Network Solutions",
+    "short": "EvaroTech",
+    "wordmark": {
+      "lead": "Evaro",
+      "accent": "Tech"
+    },
+    "tagline": "Managing partnerships, providing solutions.",
+    "owner": "Tim J. Kroekenstoel, C.Tech",
+    "role": "Owner and Operator",
+    "phone": "+1 (613) 813-6245",
+    "email": "service@evarotech.ca",
+    "facebook": "https://www.facebook.com/evarotech.ca",
+    "coverage": "Trenton, Quinte West, Belleville and surrounding Eastern Ontario",
+    "coverageLine": "Serving Trenton, Quinte West & Eastern Ontario"
+  },
+
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "managed": "Managed Services",
+    "approach": "Client Approach",
+    "contact": "Contact"
+  },
+
+  "footer": {
+    "pages": "Pages",
+    "reachUs": "Reach us",
+    "facebook": "Facebook",
+    "backToTop": "Back to top"
+  },
+
+  "pages": {
+    "home": {
+      "title": "EvaroTech Network Solutions — Managed IT in Trenton, Ontario",
+      "description": "EvaroTech Network Solutions designs, installs and manages networks, servers, wireless, backups and Microsoft 365 for businesses in Trenton and Eastern Ontario. Free on-site assessment."
+    },
+    "services": {
+      "title": "IT Services — Networks, Servers, Wireless & Cabling | EvaroTech",
+      "description": "Network and server installation, wireless, structured cabling, cameras, backup and workstation support for businesses in Trenton and Eastern Ontario."
+    },
+    "managed": {
+      "title": "Managed IT Packages — Security, Backup & Microsoft 365 | EvaroTech",
+      "description": "Managed security, managed backup and Microsoft 365 mail and apps — monitored, patched and verified so your business keeps running."
+    },
+    "approach": {
+      "title": "Our Approach — Assessed On Site, Built To Keep Running | EvaroTech",
+      "description": "How EvaroTech works: an on-site assessment, right-sized solutions, certified execution and an ongoing managed partnership."
+    },
+    "contact": {
+      "title": "Contact EvaroTech — Free On-Site IT Assessment in Trenton, ON",
+      "description": "Book a free on-site assessment and no-obligation quote with Tim Kroekenstoel, C.Tech. Call, email or send an enquiry from the form."
+    }
+  },
+
+  "home": {
+    "hero": {
+      "eyebrow": "Signal",
+      "heading": "Networks, servers and backups—kept working for your business.",
+      "intro": "EvaroTech Network Solutions is a certified independent practice in Trenton, Ontario. We assess your technology on site, put the right systems in place, and manage them so the business keeps moving.",
+      "note": "Rebranded from Consumer Computing Services",
+      "cta": "Free on-site assessment"
+    },
+    "questions": [
+      "Do you have the right solutions in place to protect your business?",
+      "Are you confident in the integrity and security of your data?",
+      "Is your network running effectively and efficiently?"
+    ],
+    "feedback": {
+      "section": "Client Feedback",
+      "heading": "The work, described by the people who called.",
+      "link": "Become the next one",
+      "items": [
+        {
+          "id": "kelly-nolan",
+          "quote": "We have had a very positive experience working with Tim for our organization's IT needs. He is professional, knowledgeable, reliable, and always willing to help when issues arise. His support has helped keep our systems running smoothly and has provided our staff with confidence knowing that assistance is available when needed. He communicates clearly, responds in a timely manner, and takes the time to understand the needs of our organization. We truly appreciate the quality of service, attention to detail, and ongoing support he provides. We would highly recommend his IT services to other organizations looking for dependable and professional technology support.",
+          "name": "Kelly Nolan, CEO",
+          "where": "St. Leonard's HPE"
+        },
+        {
+          "id": "alex-bell",
+          "quote": "Tim has been supporting our business IT needs for many years. We've always appreciated his quick, efficient service and his efforts to tailor our IT/network system to match our business needs. We recommend EvaroTech and are grateful to have Tim as part of the extended Three Hills Engineering team. From set up to support, Tim will be there for you!",
+          "name": "Alex Bell",
+          "where": "Three Hills Engineering Ltd."
+        },
+        {
+          "id": "greg-turriff",
+          "quote": "EvaroTech Network Solutions has been an excellent partner to FNTI, consistently providing knowledgeable advice, reliable support, and practical solutions tailored to our needs. Whether assisting with infrastructure planning, cybersecurity improvements, or Microsoft 365 strategy, they bring a thoughtful and professional approach to every engagement. We appreciate their responsiveness, expertise, and genuine commitment to helping our organization succeed.",
+          "name": "Greg Turriff, Director IT Systems and Support",
+          "where": "FNTI"
+        }
+      ]
+    }
+  },
+
+  "services": {
+    "header": {
+      "index": "02",
+      "section": "Services",
+      "heading": "What we install, configure and maintain.",
+      "intro": "Don't see what you need? Ask — most requests fall inside this work."
+    },
+    "items": [
+      {
+        "id": "network",
+        "title": "Network installation & management",
+        "body": "Configure, install and maintain firewalls, switches and network components — with hardened devices protecting the edge of your network.",
+        "caption": "Switches, patch panels and terminated cabling in a network rack",
+        "points": [
+          "Firewalls, switches and VLAN design",
+          "Wired and wireless site surveys",
+          "Hardened edge security with monitoring"
+        ]
+      },
+      {
+        "id": "servers",
+        "title": "Server implementation & management",
+        "body": "Physical and virtual server infrastructure, domain environments, and ongoing management of user security and permissions.",
+        "caption": "Physical and virtual server environments",
+        "points": [
+          "Physical and virtual server builds",
+          "Active Directory, users and permissions",
+          "Patch, backup and monitoring routines"
+        ]
+      },
+      {
+        "id": "wireless",
+        "title": "Wireless installation & management",
+        "body": "Indoor and outdoor wireless, building-to-building bridges, and guest network configuration that keeps visitors off your business systems.",
+        "caption": "Access points deployed across the property",
+        "points": [
+          "Access point design and rollout",
+          "Building-to-building wireless links",
+          "Separated staff and guest networks"
+        ]
+      },
+      {
+        "id": "cabling",
+        "title": "Cabling & camera systems",
+        "body": "Cable runs wired and terminated, cabinets and racks installed, plus camera system installation and management.",
+        "caption": "Indoor camera systems installed on site",
+        "points": [
+          "Cat5e, Cat6 and fibre cable runs",
+          "Racks, cabinets and patch panels",
+          "Indoor and outdoor camera systems"
+        ]
+      },
+      {
+        "id": "backup",
+        "title": "Backup & disaster recovery",
+        "body": "Local backup paired with offsite and cloud copies, and recovery plans for data corruption and hardware failure.",
+        "caption": "Local and offsite backup copies",
+        "points": [
+          "Image-based backup appliances",
+          "Offsite and cloud copies",
+          "Recovery plans with test restores"
+        ]
+      },
+      {
+        "id": "computers",
+        "title": "Computer setup & data transfer",
+        "body": "Workstation configuration, hardware and software installation, repairs, data transfer and data recovery.",
+        "caption": "Workstations configured and repaired",
+        "points": [
+          "Workstation setup and migration",
+          "Hardware and software installation",
+          "Data transfer and data recovery"
+        ]
+      }
+    ],
+    "partners": {
+      "eyebrow": "Technology partners",
+      "heading": "Platforms we work with.",
+      "intro": "{{platformCount}} platforms, grouped by the job they do — from the copies of your data and the firewall at your edge, to the hardware under the desks. Click any one for the logo, what it does and how we bring it in.",
+      "cta": "Book a free assessment",
+      "note": "Integrated, configured and supported by EvaroTech.",
+      "groups": [
+        {
+          "id": "backup",
+          "name": "Backup & recovery",
+          "blurb": "Copies of your data that can actually be restored — verified, not just scheduled.",
+          "items": [
+            {
+              "id": "veeam",
+              "name": "Veeam",
+              "website": "https://www.veeam.com",
+              "description": "Reliable backup and replication for virtual, cloud and physical workloads."
+            },
+            {
+              "id": "storagecraft",
+              "name": "StorageCraft",
+              "website": "https://www.storagecraft.com",
+              "description": "Business continuity, image-based backup and fast recovery when systems fail."
+            }
+          ]
+        },
+        {
+          "id": "firewalls",
+          "name": "Firewalls & networking",
+          "blurb": "The edge of your network, hardened and visible — not left on factory defaults.",
+          "items": [
+            {
+              "id": "watchguard",
+              "name": "WatchGuard",
+              "website": "https://www.watchguard.com",
+              "description": "Firewalls with unified threat management, VPN and per-site policy — configured, monitored and kept updated."
+            },
+            {
+              "id": "meraki",
+              "name": "Cisco Meraki",
+              "website": "https://meraki.cisco.com",
+              "description": "Cloud-managed firewalls, switches and wireless, all visible from one dashboard — a natural fit for multi-site businesses."
+            },
+            {
+              "id": "ubiquiti",
+              "name": "Ubiquiti",
+              "website": "https://www.ui.com",
+              "description": "UniFi wireless, switching and camera systems we design and deploy, without enterprise licensing to match."
+            }
+          ]
+        },
+        {
+          "id": "security",
+          "name": "Monitoring & endpoint security",
+          "blurb": "We see the problem before you do, and we can show you what happened.",
+          "items": [
+            {
+              "id": "solarwinds",
+              "name": "SolarWinds",
+              "website": "https://www.solarwinds.com",
+              "description": "Network monitoring and visibility that helps us find issues before they interrupt work."
+            },
+            {
+              "id": "sentinelone",
+              "name": "SentinelOne",
+              "website": "https://www.sentinelone.com",
+              "description": "AI-driven endpoint detection and response that stops ransomware and tells us exactly what it tried to do."
+            }
+          ]
+        },
+        {
+          "id": "cloud",
+          "name": "Cloud & productivity",
+          "blurb": "Email, files and the tools your team works in every day.",
+          "items": [
+            {
+              "id": "m365",
+              "name": "Microsoft 365",
+              "website": "https://www.microsoft.com/microsoft-365",
+              "description": "Email, Teams, OneDrive, SharePoint and the connected tools your team uses every day."
+            },
+            {
+              "id": "pax8",
+              "name": "Pax8",
+              "website": "https://www.pax8.com",
+              "description": "Cloud marketplace and platform for sourcing, managing and billing Microsoft 365 and cloud security services."
+            }
+          ]
+        },
+        {
+          "id": "servers",
+          "name": "Servers & virtualisation",
+          "blurb": "Where your systems run, whether that is one server or twenty virtual machines.",
+          "items": [
+            {
+              "id": "hyperv",
+              "name": "Microsoft Hyper-V",
+              "website": "https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/hyper-v-technology-overview",
+              "description": "Microsoft's hypervisor platform for running multiple virtual machines on one physical server."
+            },
+            {
+              "id": "vmware",
+              "name": "VMware",
+              "website": "https://www.vmware.com",
+              "description": "Virtualized server environments that make infrastructure flexible and resilient."
+            }
+          ]
+        },
+        {
+          "id": "hardware",
+          "name": "Business hardware",
+          "blurb": "Workstations, servers and storage specified for the workload and supported on site.",
+          "items": [
+            {
+              "id": "dell",
+              "name": "Dell",
+              "website": "https://www.dell.com",
+              "description": "PowerEdge servers, storage and business PCs engineered for dependable everyday IT."
+            },
+            {
+              "id": "lenovo",
+              "name": "Lenovo",
+              "website": "https://www.lenovo.com",
+              "description": "Business laptops, desktops and workstations configured for dependable daily use."
+            },
+            {
+              "id": "hpe",
+              "name": "HP Enterprise",
+              "website": "https://www.hpe.com",
+              "description": "ProLiant servers, storage and networking hardware, sized to the workload and supported on site."
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  "managed": {
+    "header": {
+      "index": "03",
+      "section": "Managed Services",
+      "heading": "Managed packages that cover the whole business.",
+      "intro": "Ongoing services that keep systems patched, monitored and backed up long after install day."
+    },
+    "why": {
+      "eyebrow": "Managed / Why go managed",
+      "heading": "Your IT, handled — so the business keeps moving.",
+      "body": "A managed package turns technology from something you worry about into something that just works. We watch, patch and verify your systems on a schedule, and you always have a direct line to the person who knows your setup.",
+      "caption": "Fig. 01 — Your IT, watched and kept healthy",
+      "points": [
+        "One flat monthly rate — no surprise invoices",
+        "Problems fixed before they interrupt work",
+        "Backups verified so a restore is never a guess",
+        "Direct access to a technician who knows your setup"
+      ]
+    },
+    "expect": {
+      "eyebrow": "Managed / What you can expect",
+      "heading": "The same care, every month.",
+      "caption": "Fig. 02 — Monitored around the clock, from one screen",
+      "items": [
+        {
+          "id": "monitored",
+          "title": "Monitored",
+          "body": "We watch your servers, workstations and backups around the clock — and we hear about problems before you do."
+        },
+        {
+          "id": "maintained",
+          "title": "Maintained",
+          "body": "Patches and updates are applied on a schedule that suits your business. No forced reboots mid-morning."
+        },
+        {
+          "id": "supported",
+          "title": "Supported",
+          "body": "One call or email reaches Tim directly — worked remotely first, and on site when it needs to be."
+        }
+      ]
+    },
+    "packages": {
+      "eyebrow": "Packages / Select one to open its details",
+      "cta": "Ask which package fits",
+      "items": [
+        {
+          "id": "security",
+          "title": "Managed Security Suite",
+          "body": "Endpoint detection and response, content filtering, patch management, plus remote access and monitoring — closing the gaps attackers look for and resolving issues without a site visit.",
+          "points": [
+            "Endpoint detection and response on every device",
+            "Content and web filtering for staff",
+            "Automated patch and update management",
+            "Remote monitoring and secure support access"
+          ],
+          "software": [
+            {
+              "id": "solarwinds",
+              "name": "SolarWinds",
+              "website": "https://www.solarwinds.com"
+            },
+            {
+              "id": "microsoft",
+              "name": "Microsoft",
+              "website": "https://www.microsoft.com/security/business"
+            }
+          ]
+        },
+        {
+          "id": "backup",
+          "title": "Managed Backup Solution",
+          "body": "A fully managed backup service with encrypted on-site and off-site copies, verified weekly so a restore is never a guess.",
+          "points": [
+            "Image-based backup for servers and workstations",
+            "Encrypted on-site and off-site copies",
+            "Weekly verification and test restores",
+            "Recovery coverage for corruption and hardware failure"
+          ],
+          "software": [
+            {
+              "id": "veeam",
+              "name": "Veeam",
+              "website": "https://www.veeam.com"
+            },
+            {
+              "id": "storagecraft",
+              "name": "StorageCraft",
+              "website": "https://www.storagecraft.com"
+            }
+          ]
+        },
+        {
+          "id": "m365",
+          "title": "Microsoft 365 Mail & Apps",
+          "body": "Exchange mail, Office applications, Teams, OneDrive and SharePoint, with spam filtering and cloud mail backup.",
+          "points": [
+            "Exchange Online mail, calendars and contacts",
+            "Word, Excel, PowerPoint and the Office apps",
+            "Teams chat, meetings and collaboration",
+            "OneDrive and SharePoint file storage",
+            "Spam filtering and cloud mail backup"
+          ],
+          "software": [
+            {
+              "id": "m365",
+              "name": "Microsoft 365",
+              "website": "https://www.microsoft.com/microsoft-365"
+            }
+          ]
+        }
+      ]
+    },
+    "detail": {
+      "bar": "Managed Services",
+      "barPackage": "Package",
+      "included": "Included",
+      "areas": "areas",
+      "poweredBy": "Powered by",
+      "see": "See {{name}}",
+      "note": "Every package is set up, monitored and supported by EvaroTech — no product juggling on your side.",
+      "cta": "Ask about this package"
+    }
+  },
+
+  "approach": {
+    "header": {
+      "index": "04",
+      "section": "Client Approach",
+      "heading": "Assessed on site. Built to keep running."
+    },
+    "intro": {
+      "eyebrow": "Steps / Four steps, one way of working",
+      "heading": "Every engagement runs the same way — from the first visit to ongoing care.",
+      "body": "No shortcuts, no surprises: we assess on site, size the solution to your operation, build it to vendor best practice, and stay with you afterwards. Scroll through the four steps below.",
+      "caption": "Fig. 01 — Working on site, from assessment to ongoing care"
+    },
+    "cta": "Start with an assessment",
+    "steps": [
+      {
+        "id": "assessment",
+        "title": "On-site assessment",
+        "body": "We come to you, look at the real environment, and map what your business actually depends on.",
+        "caption": "Looking at the real environment in person",
+        "points": [
+          "A walkthrough of your network, servers and backups",
+          "How your team actually uses technology day to day",
+          "A written summary of findings and priorities"
+        ]
+      },
+      {
+        "id": "solutions",
+        "title": "Right-sized solutions",
+        "body": "Recommendations scoped to your operation — no oversized platforms, no licences you will never use.",
+        "caption": "Working through the right options together",
+        "points": [
+          "Recommendations matched to how you operate",
+          "No oversized platforms or unused licences",
+          "Plain-language options with clear scope"
+        ]
+      },
+      {
+        "id": "execution",
+        "title": "Certified execution",
+        "body": "Installation and configuration handled by a certified technician who stands behind the work.",
+        "caption": "Built and configured hands-on",
+        "points": [
+          "Scheduled around your working hours",
+          "Workmanship that follows vendor best practice",
+          "Documentation and handover when it's done"
+        ]
+      },
+      {
+        "id": "partnership",
+        "title": "Ongoing partnership",
+        "body": "Managed packages keep systems patched, monitored and backed up long after install day.",
+        "caption": "Monitored and managed after install day",
+        "points": [
+          "Scheduled monitoring, patching and maintenance",
+          "Backups verified so a restore is never a guess",
+          "Direct access to Tim when something breaks"
+        ]
+      }
+    ]
+  },
+
+  "contact": {
+    "header": {
+      "index": "06",
+      "section": "Contact",
+      "heading": "Book a free assessment and no-obligation quote.",
+      "intro": "EvaroTech Network Solutions will come to you, assess your business technology needs and recommend what to do next."
+    },
+    "details": {
+      "phone": "Phone",
+      "email": "Email",
+      "coverage": "Coverage"
+    },
+    "form": {
+      "heading": "Send an enquiry",
+      "optional": "Optional",
+      "labels": {
+        "name": "Name",
+        "email": "Email",
+        "company": "Business",
+        "message": "What do you need?"
+      },
+      "placeholders": {
+        "email": "you@business.ca",
+        "message": "Networks, servers, backups, wireless…"
+      },
+      "submit": "Send enquiry",
+      "sending": "Sending…",
+      "sentHeading": "Message sent.",
+      "sentBody": "Thanks{{firstName}} — your enquiry is on its way to the EvaroTech team. We usually get back to you within one business day. For anything urgent, call {{phone}}."
+    }
+  }
+}
