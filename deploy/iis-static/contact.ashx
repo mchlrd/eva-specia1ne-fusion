@@ -1,5 +1,5 @@
 <%@ WebHandler Language="C#" Class="ContactHandler" %>
-<%--
+/*
   Contact-form handler for the static deployment of evarotech.ca.
 
   A static HTML site cannot send mail, so the form posts here instead. This file
@@ -8,13 +8,31 @@
   Drop it in the site root next to index.html. IIS compiles it on the first
   request, so there is nothing to build and no DLL to deploy.
 
-  Requires the "ASP.NET 4.x" IIS feature (ships with Windows Server):
+  Two rules for editing this file. Both were learned the hard way, in a live 500.
+
+    1. The first line stays the WebHandler directive, and nothing but a C#
+       comment may come before the code. A .ashx file is compiled as raw C#, so
+       an ASP.NET-style server-side comment block (the one that looks like a
+       comment in a .aspx page) is not a comment here: its first line reaches the
+       compiler and the site answers 500 with "CS1010: Newline in constant",
+       pointing at the prose. C# block comments and // lines are safe.
+
+    2. Keep the file pure ASCII, and save it without a byte-order mark. This
+       machine's compiler reads a file with no BOM in the system codepage, so a
+       typographic dash in the subject line reaches the mailbox as three
+       mojibake characters instead of one dash, and the same happens to the
+       messages a visitor sees. Write " - " rather than a dash.
+
+  Requires the "ASP.NET 4.x" IIS feature (ships with Windows Server), which
+  installs .NET 4.5 or later. Request.Unvalidated below needs 4.5 or later:
+
     Install-WindowsFeature Web-Asp-Net45        (or the IIS Manager UI)
 
   What it does, in order:
-    - rejects anything but a same-origin POST (and a localhost-only self test)
+    - answers only a POST, and refuses one a browser says came from another site
+    - refuses the self test when it arrived through a proxy
     - silently swallows bots that fill the hidden honeypot field
-    - validates and length-caps every field, so it can never relay arbitrary mail
+    - validates and length-caps every field, so it cannot relay arbitrary mail
     - throttles per visitor IP, since a static host has no other rate limiting
     - sends through SMTP with the recipient fixed in configuration
 
@@ -24,11 +42,18 @@
     EVAROTECH_SMTP_USER  SMTP_USER   no-reply@evarotech.ca (also the From address)
     EVAROTECH_SMTP_PASS  SMTP_PASS   the mailbox password            [required]
     EVAROTECH_SMTP_TO    SMTP_TO     where enquiries are delivered
-    EVAROTECH_LOG_PATH   LOG_PATH    log file path (default C:\inetpub\logs\evarotech-enquiries.log)
+    EVAROTECH_LOG_PATH   LOG_PATH    log file (default C:\inetpub\logs\evarotech-enquiries.log)
 
-  Test it from a browser on the server itself:  https://localhost/contact.ashx?selftest=1
---%>
+  To test the mail settings, run this ON THE SERVER. The certificate is bound to
+  evarotech.ca, so https://localhost/ fails at the TLS handshake:
+
+    curl.exe --resolve evarotech.ca:443:127.0.0.1 https://evarotech.ca/contact.ashx?selftest=1
+
+  It sends a real message and reports which host, port, user and TLS version were
+  used. Anything wrong is described in the JSON "error" field.
+*/
 using System;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -56,13 +81,21 @@ public class ContactHandler : IHttpHandler
 
     public void ProcessRequest(HttpContext context)
     {
-        // Local-only diagnostics, so you can verify credentials and TLS from a
-        // browser on the server without needing to know SMTP from the outside.
-        if (IsTruthy(context.Request.QueryString["selftest"]))
+        // Local-only diagnostics, so you can verify credentials and TLS from the
+        // server without needing SMTP to be reachable from anywhere else.
+        if (IsTruthy(context.Request.Unvalidated.QueryString["selftest"]))
         {
-            if (!context.Request.IsLocal)
+            if (!context.Request.IsLocal || CameThroughProxy(context))
             {
+                // Wording is quoted in deploy/STATIC-HOSTING.md; keep the two in step.
                 WriteJson(context, 403, "{\"error\":\"The self test is only available on the server itself.\"}");
+                return;
+            }
+            // Throttled like a real submission: this endpoint sends mail, so it
+            // must not be usable as a mail loop even from the server's own desk.
+            if (!AllowRequest(ClientIp(context)))
+            {
+                WriteJson(context, 429, "{\"error\":\"Too many self tests. Please try again in a few minutes.\"}");
                 return;
             }
             SelfTest(context);
@@ -75,18 +108,26 @@ public class ContactHandler : IHttpHandler
             return;
         }
 
+        if (FromAnotherSite(context))
+        {
+            WriteJson(context, 403, "{\"error\":\"This form only accepts submissions from evarotech.ca.\"}");
+            return;
+        }
+
+        NameValueCollection form = PostedFields(context);
+
         // Bots fill hidden fields; people never see them. Answer as if it worked
         // so the bot moves on and nothing is sent.
-        if (!string.IsNullOrEmpty(context.Request.Form["website"]))
+        if (!string.IsNullOrEmpty(form["website"]))
         {
             WriteJson(context, 200, "{\"ok\":true}");
             return;
         }
 
-        string name = Trim(context.Request.Form["name"]);
-        string email = Trim(context.Request.Form["email"]);
-        string company = Trim(context.Request.Form["company"]);
-        string message = Trim(context.Request.Form["message"]);
+        string name = Trim(form["name"]);
+        string email = Trim(form["email"]);
+        string company = Trim(form["company"]);
+        string message = Trim(form["message"]);
 
         string problem = Validate(name, email, company, message);
         if (problem != null)
@@ -98,7 +139,7 @@ public class ContactHandler : IHttpHandler
         string ip = ClientIp(context);
         if (!AllowRequest(ip))
         {
-            WriteJson(context, 429, "{\"error\":\"Too many enquiries — please try again in a few minutes.\"}");
+            WriteJson(context, 429, "{\"error\":\"Too many enquiries. Please try again in a few minutes.\"}");
             return;
         }
 
@@ -114,15 +155,72 @@ public class ContactHandler : IHttpHandler
         catch (ConfigurationException ex)
         {
             AppendLog(context, string.Format(CultureInfo.InvariantCulture, "{0:u} FAILED (configuration) ip={1} {2}", DateTime.UtcNow, ip, ex.Message));
-            WriteJson(context, 500, "{\"error\":\"The contact form is not configured yet — please email service@evarotech.ca directly.\"}");
+            WriteJson(context, 500, "{\"error\":\"The contact form is not configured yet. Please email service@evarotech.ca directly.\"}");
         }
         catch (Exception ex)
         {
             // The reason (including any SMTP response) goes to the log, never to
-            // the visitor — it can name internal hosts.
+            // the visitor - it can name internal hosts.
             AppendLog(context, string.Format(CultureInfo.InvariantCulture, "{0:u} FAILED ip={1} {2}: {3}", DateTime.UtcNow, ip, ex.GetType().Name, ex.Message));
-            WriteJson(context, 500, "{\"error\":\"We couldn't send your message right now — please try again, or email service@evarotech.ca directly.\"}");
+            WriteJson(context, 500, "{\"error\":\"We couldn't send your message right now. Please try again, or email service@evarotech.ca directly.\"}");
         }
+    }
+
+    // ---- reading the submission -------------------------------------------
+
+    /// Reads the posted fields without request validation.
+    ///
+    /// ASP.NET's request validation refuses the whole submission when a field
+    /// contains something that looks like markup, and it does it by throwing
+    /// while Request.Form is built - so a customer writing "our old server was
+    /// <SERVER01>" would get a 500 and a generic failure message, with nothing in
+    /// the log to explain it.
+    ///
+    /// Nothing here needs validation: every field is length-capped below, the
+    /// text is never rendered as HTML (it goes into a plain-text email body), it
+    /// is never written into a mail header, and the recipient is fixed in
+    /// configuration. What protects this endpoint is that shape, plus the
+    /// honeypot and the throttle - not the validator.
+    private static NameValueCollection PostedFields(HttpContext context)
+    {
+        try
+        {
+            return context.Request.Unvalidated.Form;
+        }
+        catch
+        {
+            // A body that cannot be parsed at all lands here and is treated as an
+            // empty submission, which the validation below turns into a 400.
+            return new NameValueCollection();
+        }
+    }
+
+    /// True when a browser told us the form was posted from another website.
+    /// A missing Origin header is allowed through on purpose: bots and some
+    /// privacy configurations omit it, and a false rejection would lose a real
+    /// enquiry to satisfy the honeypot and the throttle, which are already there.
+    private static bool FromAnotherSite(HttpContext context)
+    {
+        string origin = context.Request.Headers["Origin"];
+        if (string.IsNullOrEmpty(origin)) return false;
+
+        Uri parsed;
+        if (!Uri.TryCreate(origin, UriKind.Absolute, out parsed)) return true;
+        return !string.Equals(parsed.Host, context.Request.Url.Host, StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// True when a proxy forwarded the request, which means it did not come
+    /// straight from the server's own browser.
+    ///
+    /// Request.IsLocal is true for anything a reverse proxy on the same machine
+    /// hands to IIS, so on a host that sits behind one (ARR, or a web farm
+    /// module) the self test would otherwise be reachable from the internet -
+    /// and it sends mail.
+    private static bool CameThroughProxy(HttpContext context)
+    {
+        return !string.IsNullOrEmpty(context.Request.Headers["X-Forwarded-For"])
+            || !string.IsNullOrEmpty(context.Request.Headers["X-Real-IP"])
+            || !string.IsNullOrEmpty(context.Request.Headers["X-Forwarded-Host"]);
     }
 
     // ---- mail -------------------------------------------------------------
@@ -152,11 +250,12 @@ public class ContactHandler : IHttpHandler
         using (SmtpClient client = new SmtpClient(host, port))
         {
             mail.From = new MailAddress(user, "EvaroTech Website");
-            // Recipient is fixed in configuration — never taken from the request,
+            // Recipient is fixed in configuration - never taken from the request,
             // so this handler cannot be used to relay mail to third parties.
             mail.To.Add(to);
             mail.ReplyToList.Add(new MailAddress(email, name));
-            mail.Subject = "Website enquiry — " + name;
+            // Keep this line ASCII; see rule 2 in the header comment.
+            mail.Subject = "Website enquiry - " + name;
             mail.SubjectEncoding = Encoding.UTF8;
             mail.Body = body.ToString();
             mail.BodyEncoding = Encoding.UTF8;
@@ -320,9 +419,21 @@ public class ContactHandler : IHttpHandler
 
     private static void WriteJson(HttpContext context, int status, string json)
     {
+        // Without this, the httpErrors section in web.config replaces our JSON
+        // with IIS's own error page. The browser then receives HTML where the
+        // form expects a message, and shows its generic wording instead of the
+        // reason - which is what made the first failures here so hard to read.
+        context.Response.TrySkipIisCustomErrors = true;
         context.Response.StatusCode = status;
         context.Response.ContentType = "application/json; charset=utf-8";
-        context.Response.CacheControl = "no-store";
+
+        // Not Response.CacheControl: it accepts only public, private and no-cache
+        // and throws ArgumentException on anything else, including "no-store" -
+        // a 500 raised from inside the error path itself. The cache policy API
+        // has no such opinion and emits "no-cache, no-store".
+        context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        context.Response.Cache.SetNoStore();
+
         context.Response.Write(json);
     }
 
