@@ -12,6 +12,7 @@ import { type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { RouteTransitionOverlay } from "../components/site/PageTransition";
 import { ContentProvider } from "../components/site/content";
+import { CONTENT_FILE_MARKER, CONTENT_FILE_PLACEHOLDER } from "../components/site/content-store";
 import { THEME_BAR_COLOR, THEME_BOOTSTRAP } from "../components/site/theme-store";
 
 function NotFoundComponent() {
@@ -93,6 +94,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       // Matches --paper; the theme script rewrites it the moment the theme is known.
       { name: "theme-color", content: THEME_BAR_COLOR.light },
+      /*
+        Records whether this deployment ships an editable /content.json. The
+        managed build leaves the placeholder, which reads as "no"; the static
+        export replaces it with "yes" as it writes each page, because that is the
+        build that also writes the file. The runtime uses it to decide whether a
+        missing file is worth telling anyone about — see content-store.ts.
+      */
+      { name: CONTENT_FILE_MARKER, content: CONTENT_FILE_PLACEHOLDER },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

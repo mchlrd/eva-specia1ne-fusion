@@ -10,6 +10,8 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import {
   CONTENT_UPDATING_EVENT,
   defaults,
+  expectsContentFile,
+  looksLikeContentFile,
   mergeContent,
   parseContentFile,
   type ContentProblem,
@@ -22,24 +24,39 @@ type ContentValue = { content: SiteContent; problems: ContentProblem[]; version:
 
 const ContentContext = createContext<ContentValue>({ content: defaults, problems: [], version: 0 });
 
-async function loadContentFile(): Promise<
-  { ok: true; text: string } | { ok: false; message: string }
-> {
+/**
+ * `missing` covers "there is nothing at this address" — the normal state of every
+ * build that does not ship the file. `foreign` covers "something answered, but it
+ * is not our file", which is what a server returning its own page for an unknown
+ * path looks like. Only the caller decides whether either is worth mentioning.
+ */
+type ContentFileResult =
+  | { kind: "loaded"; text: string }
+  | { kind: "missing"; message: string }
+  | { kind: "foreign"; message: string };
+
+async function loadContentFile(): Promise<ContentFileResult> {
   try {
     const response = await fetch(`${CONTENT_URL}?v=${Date.now()}`, {
       cache: "no-store",
       headers: { accept: "application/json, text/plain, */*" },
     });
     if (!response.ok) {
-      return { ok: false, message: `could not be loaded (HTTP ${response.status})` };
+      return { kind: "missing", message: `could not be loaded (HTTP ${response.status})` };
     }
     // Decoded explicitly: this file is written in Notepad and carries em dashes
     // and curly quotes, so it must never be read as the system codepage.
     const text = new TextDecoder("utf-8").decode(await response.arrayBuffer());
-    return { ok: true, text };
+    if (!looksLikeContentFile(text)) {
+      return {
+        kind: "foreign",
+        message: "did not come back as the text file — the server sent a page instead",
+      };
+    }
+    return { kind: "loaded", text };
   } catch (error) {
     return {
-      ok: false,
+      kind: "missing",
       message: `could not be loaded (${error instanceof Error ? error.message : "network error"})`,
     };
   }
@@ -63,10 +80,18 @@ export function ContentProvider({ children }: { children: ReactNode }) {
       const file = await loadContentFile();
       if (cancelled) return;
 
-      if (!file.ok) {
-        setProblems([
-          { path: CONTENT_URL, message: `${file.message} — showing the built-in text` },
-        ]);
+      if (file.kind !== "loaded") {
+        // Nothing to apply — and usually nothing to say. A deployment that has
+        // no writable disk and a dev server both have no file by design, so the
+        // page stays silent; only a deployment that is supposed to carry one
+        // says anything, because there the file is missing or being served as
+        // something else, and that is exactly the case the editor needs to hear
+        // about. See CONTENT_FILE_MARKER.
+        setProblems(
+          expectsContentFile()
+            ? [{ path: CONTENT_URL, message: `${file.message} — showing the built-in text` }]
+            : [],
+        );
         return;
       }
 
@@ -144,8 +169,9 @@ export function PageMetaSync({ pathname }: { pathname: string }) {
 /**
  * Tells the person who edited the file that something in it was rejected, and
  * which line. Renders nothing at all when the file is absent or clean, so it is
- * invisible to visitors in the normal case. Dismissible for the session so it
- * never sits on top of the site after it has been read.
+ * invisible to visitors in the normal case — including visitors to a deployment
+ * that never had the file. Dismissible for the session so it never sits on top
+ * of the site after it has been read.
  */
 export function ContentNotice() {
   const problems = useContentProblems();

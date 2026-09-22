@@ -25,6 +25,52 @@ export const defaults: SiteContent = siteContent;
 
 export type ContentProblem = { path: string; message: string };
 
+// ---------------------------------------------------------------------------
+// Is this deployment supposed to carry an editable file at all?
+// ---------------------------------------------------------------------------
+
+/**
+ * Name of the meta tag the static export stamps into every page it writes.
+ *
+ * Most builds of this site have no editable file: the managed build compiles the
+ * text into the bundle and serves it from somewhere with no writable disk, and
+ * the dev server serves `public/`, which does not contain it. Only the static
+ * export — the build that runs on IIS — ships `/content.json`.
+ *
+ * So "the file is not there" means something different in each case: on IIS it
+ * means the person who edits the site has lost the file or is not being served
+ * it, while everywhere else it is simply how that build works. Without this the
+ * warning panel appeared on every visit to a managed deployment, telling
+ * visitors about a file that was never meant to exist there.
+ */
+export const CONTENT_FILE_MARKER = "ev-content-file";
+
+/** The value the export writes; anything else (including the literal below) means no. */
+export const CONTENT_FILE_EXPECTED = "yes";
+
+/** Placeholder the route renders; the export substitutes it when it ships the file. */
+export const CONTENT_FILE_PLACEHOLDER = "__EV_CONTENT_EXPECTED__";
+
+/** True when the page was built by the export, which also wrote `/content.json`. */
+export function expectsContentFile(
+  doc: Document | null = typeof document === "undefined" ? null : document,
+): boolean {
+  if (!doc) return false;
+  const meta = doc.querySelector(`meta[name="${CONTENT_FILE_MARKER}"]`);
+  return meta?.getAttribute("content") === CONTENT_FILE_EXPECTED;
+}
+
+/**
+ * Whether a response body is the text file rather than a page the server sent
+ * instead. Both a real file (its header is `//` comments) and a bare copy of the
+ * repository file (it starts with `{`) count; an HTML page does not, which is
+ * what a server answering an unknown path with its own page looks like.
+ */
+export function looksLikeContentFile(text: string): boolean {
+  const head = text.replace(/^\uFEFF/, "").trimStart();
+  return head.startsWith("//") || head.startsWith("/*") || head.startsWith("{");
+}
+
 /**
  * Fired just before an edited content file is applied. Anything that took text
  * nodes away from React (the letter-glow split) listens for this and hands them

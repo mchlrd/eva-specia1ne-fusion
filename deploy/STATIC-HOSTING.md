@@ -73,6 +73,13 @@ contact.ashx  web.config                                  ← the form handler +
 `content.json` is the file to edit for wording changes — see section 6. It
 explains itself at the top, and the pages read it on every load.
 
+Every page also carries a `<meta name="ev-content-file">` tag saying whether this
+build ships that file: the export stamps `yes`, a build that has no writable disk
+leaves the placeholder. That is not decoration. It is how the site knows that a
+missing `content.json` *here* is a fault worth warning about, while a hosted build
+that was never meant to have the file — and a development server — stay quiet
+instead of showing the warning panel to every visitor. Leave the tag in place.
+
 Back up what is there now, then copy the folder's **contents** into the site's
 existing physical path (the folder your `evarotech.ca` site already points at):
 
@@ -195,7 +202,10 @@ comma, or an empty `""` value.
 **When something in it is wrong, nothing breaks.** The site keeps its built-in
 text for the values it could not read, and a small panel appears at the bottom
 left of the page naming the value and the line to look at. That panel is only
-visible when there is a problem.
+visible when there is a problem — and only on a deployment that is supposed to
+have the file, which is this one. Seeing it at all means `content.json` is
+missing from the site root, is being served as a page instead of as the file, or
+has a real mistake in it.
 
 The same rules apply to list entries (testimonials, services, packages,
 platforms): reorder them, delete them, or add a new one with a fresh `id`. A new
@@ -275,6 +285,7 @@ mail settings, no IIS bindings, no installed services.
 | **A hand edit to `index.html` (or `assets/*.js`) had no effect** | Expected — those files are not where the words live. Each page is a prerendered React document, and the scripts in `assets/` redraw it a moment after it loads, so anything edited into the HTML is thrown away, and a hand-edited bundle is cached for a year by filename anyway. Edit `content.json` for wording; ask us for anything else. |
 | **`content.json` edited, page unchanged** | Three things to check, in order: the file is in the site root next to `index.html`; it saved as `content.json` and not `content.txt`; and the browser did a real reload (Ctrl+F5) rather than showing a cached page. If the file could not be read at all, a panel appears at the bottom left saying so. |
 | **A panel at the bottom left names a line in `content.json`** | The file has a problem at that line — usually a missing quote or comma, or an empty value — and the site is showing its built-in wording for those values. Fix that line, save, reload. Everything else in the file still applies. |
+| **The panel says `did not come back as the text file — the server sent a page instead`** | The request for `/content.json` was answered with an HTML page rather than the file — normally IIS's own error page for a path it could not match, which is what it does when the file is not in the site root. Check that `content.json` is sitting next to `index.html`, spelled exactly that way, and not `content.txt`. |
 | **`/content.json` gives a 404 or a 404.3** | The file is missing from the site root, or IIS has no MIME type for `.json` (rare — IIS 8 and newer have it). Copy the file in; if the MIME type really is missing, add it with `<remove fileExtension=".json" />` followed by `<add fileExtension=".json" mimeType="application/json" />` inside `<staticContent>`, guarding the `<add>` with the `<remove>` so the entry can't collide with IIS's own. |
 | **`/services` becomes `/services/` in the address bar** | Normal IIS behaviour for a folder with an `index.html`. Harmless; links inside the site don't go through it. |
 | **"The self test is only available on the server itself"** | Working as intended. Run the `curl.exe --resolve` command from step 4 on the server; browsing it from another machine — or through the router, which arrives from the router's address — can never be local. The same answer appears for a request that came through a proxy, even from the server's own desk: the forwarding headers give it away, and that is the check doing its job. |

@@ -20,6 +20,8 @@
 //     read, and a small panel appears at the bottom left telling you which line
 //     to look at.
 //   * An empty value ("") or a missing comma is the usual cause.
+//   * If the panel says the file could not be loaded at all, the file is missing
+//     from the site folder rather than wrong - copy it back in next to index.html.
 //
 //  What this file does NOT change
 //  ------------------------------

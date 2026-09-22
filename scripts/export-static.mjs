@@ -34,6 +34,44 @@ const ROUTES = [
   { url: "/contact", file: "contact/index.html" },
 ];
 
+// The page carries a marker saying whether this deployment has an editable
+// /content.json. The managed build leaves the placeholder, which the site reads
+// as "no" and stays quiet about a file it was never meant to have; this export
+// ships the file, so it stamps "yes" and the site warns if the file ever goes
+// missing on a server that should have it. The names are defined in
+// src/components/site/content-store.ts — if either is renamed, this throws
+// rather than quietly losing the warning.
+const MARKER_NAME = "ev-content-file";
+const MARKER_PLACEHOLDER = "__EV_CONTENT_EXPECTED__";
+const MARKER_EXPECTED = "yes";
+
+/**
+ * Rewrites the marker meta tag in one exported page. Deliberately strict: a page
+ * without the tag, or a tag that no longer holds the placeholder, fails the
+ * export instead of producing a silent copy.
+ */
+function stampContentMarker(html, url) {
+  const tag = new RegExp(`<meta[^>]*name="${MARKER_NAME}"[^>]*>`).exec(html)?.[0];
+  if (!tag) {
+    throw new Error(
+      `${url} has no "${MARKER_NAME}" meta tag. The site uses it to tell whether ` +
+        "a missing content.json is a fault (this build) or normal (the managed " +
+        "build), so without it the warning panel would either vanish or appear " +
+        "to every visitor. Check the marker in src/routes/__root.tsx.",
+    );
+  }
+  if (!tag.includes(`content="${MARKER_PLACEHOLDER}"`)) {
+    throw new Error(
+      `${url} carries a "${MARKER_NAME}" tag without the ${MARKER_PLACEHOLDER} ` +
+        `placeholder, so it cannot be stamped "${MARKER_EXPECTED}". Check the ` +
+        "marker in src/routes/__root.tsx and the placeholder in " +
+        "src/components/site/content-store.ts.",
+    );
+  }
+  const stamped = tag.replace(`content="${MARKER_PLACEHOLDER}"`, `content="${MARKER_EXPECTED}"`);
+  return html.replace(tag, () => stamped);
+}
+
 async function freePort() {
   return new Promise((resolve, reject) => {
     const probe = createServer();
@@ -99,8 +137,12 @@ async function main() {
         throw new Error(`${route.url} did not return an HTML document.`);
       }
       const target = path.join(outDir, route.file);
+      const stamped = stampContentMarker(html, route.url);
+      if (stamped.includes(MARKER_PLACEHOLDER)) {
+        throw new Error(`${route.url} still contains ${MARKER_PLACEHOLDER} after stamping.`);
+      }
       await mkdir(path.dirname(target), { recursive: true });
-      await writeFile(target, html);
+      await writeFile(target, stamped);
       console.log(
         `  ${route.url.padEnd(10)} -> ${route.file} (${(html.length / 1024).toFixed(0)} kB)`,
       );
